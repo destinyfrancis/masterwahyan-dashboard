@@ -1,0 +1,14 @@
+{
+  "name": "masterwahyan-dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-dashboards.js",
+    "dev": "wrangler pages dev public --compatibility-date=2026-06-06",
+    "deploy": "wrangler pages deploy public --project-name=masterwahyan-dashboard"
+  },
+  "devDependencies": {
+    "wrangler": "^4.20.0"
+  }
+}

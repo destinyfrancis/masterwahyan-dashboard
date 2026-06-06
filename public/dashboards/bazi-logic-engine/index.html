@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BaZiLogicEngine Project Dashboard</title>
+  <style>
+    :root {
+      --paper: #f4f1e8;
+      --paper-2: #ebe5d6;
+      --ink: #161411;
+      --muted: #69635a;
+      --line: #d3c9b7;
+      --panel: #fffdf7;
+      --panel-2: #f9f5ea;
+      --teal: #126c67;
+      --teal-2: #0c4e4a;
+      --red: #a33b2f;
+      --amber: #b46c17;
+      --blue: #285f8f;
+      --green: #2e744f;
+      --violet: #6b548f;
+      --shadow: 0 20px 54px rgba(38, 29, 15, 0.12);
+      --mono: "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+      --body: "Avenir Next", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      --serif: Georgia, "Songti TC", "Noto Serif TC", serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(120deg, rgba(18, 108, 103, 0.10), transparent 34%),
+        linear-gradient(300deg, rgba(180, 108, 23, 0.12), transparent 38%),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.24;
+      background-image:
+        linear-gradient(rgba(22, 20, 17, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 20, 17, 0.045) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, black, transparent 72%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1480px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 18px 0 48px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 14px 12px 18px;
+      border: 1px solid rgba(211, 201, 183, 0.92);
+      background: rgba(255, 253, 247, 0.88);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 34px rgba(38, 29, 15, 0.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+    }
+
+    .seal {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--red);
+      color: var(--red);
+      font-family: var(--serif);
+      font-weight: 800;
+      transform: rotate(-4deg);
+    }
+
+    .brand b {
+      display: block;
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .nav a,
+    button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      color: #2a2520;
+      padding: 7px 10px;
+      font: 700 12px var(--body);
+      cursor: pointer;
+    }
+
+    .nav a:hover,
+    button:hover {
+      border-color: var(--teal);
+      color: var(--teal-2);
+      background: #f2fff9;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      gap: 22px;
+      align-items: stretch;
+      min-height: 580px;
+      padding: 64px 0 20px;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      padding: 8px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 247, 0.72);
+      color: var(--teal-2);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(46, 116, 79, 0.15);
+      border-radius: 50%;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-family: var(--serif);
+      font-size: 72px;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      margin: 0;
+      color: #39332b;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-link {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--teal-2);
+      background: var(--teal-2);
+      color: white;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .ghost-link {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 247, 0.74);
+      color: #25211c;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .snapshot-board {
+      align-self: end;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 247, 0.90);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .snapshot-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+
+    .snapshot-title h2,
+    .section-title h2 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: 28px;
+      line-height: 1.05;
+    }
+
+    .date-chip {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--muted);
+      padding: 6px 8px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .big-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 112px;
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric::after {
+      content: "";
+      position: absolute;
+      right: -34px;
+      top: -34px;
+      width: 90px;
+      height: 90px;
+      border: 1px solid rgba(18, 108, 103, 0.18);
+      transform: rotate(22deg);
+    }
+
+    .metric strong {
+      position: relative;
+      font-family: var(--serif);
+      font-size: 44px;
+      line-height: 1;
+    }
+
+    .metric span {
+      position: relative;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .metric.ok strong { color: var(--green); }
+    .metric.warn strong { color: var(--amber); }
+    .metric.risk strong { color: var(--red); }
+    .metric.info strong { color: var(--blue); }
+
+    .note-strip {
+      margin-top: 12px;
+      border-left: 4px solid var(--amber);
+      background: #fff7df;
+      padding: 12px;
+      color: #473820;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .section {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 247, 0.92);
+      box-shadow: 0 14px 38px rgba(38, 29, 15, 0.08);
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      padding: 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(249, 245, 234, 0.82);
+    }
+
+    .section-title p {
+      max-width: 650px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .section-body {
+      padding: 22px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      padding: 16px;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .panel p,
+    .panel li {
+      color: #3f3932;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .panel p {
+      margin: 0;
+    }
+
+    .panel ul,
+    .panel ol {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      background: #fffdf7;
+      padding: 5px 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .diagram {
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      overflow: hidden;
+    }
+
+    svg {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .legend {
+      display: grid;
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 9px;
+      align-items: start;
+      color: #403930;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      margin-top: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      color: #3b342e;
+      padding: 8px 11px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .tab[aria-selected="true"] {
+      border-color: var(--teal-2);
+      background: var(--teal-2);
+      color: #fff;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .module-map {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .module-button {
+      text-align: left;
+      width: 100%;
+      background: #fffaf0;
+    }
+
+    .module-button.active {
+      border-color: var(--teal-2);
+      background: #eaf7f2;
+      color: var(--teal-2);
+    }
+
+    .module-detail {
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      padding: 18px;
+      min-height: 320px;
+    }
+
+    .module-detail h3 {
+      margin: 0 0 8px;
+      font-family: var(--serif);
+      font-size: 30px;
+    }
+
+    .module-detail code,
+    .command code,
+    .small-code {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #223a37;
+      background: rgba(18, 108, 103, 0.08);
+      padding: 2px 4px;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .score-table th,
+    .score-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .score-table th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      background: #fbf6ea;
+    }
+
+    .bar {
+      width: 100%;
+      height: 9px;
+      background: #eadfcd;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: var(--teal);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 13px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      position: relative;
+    }
+
+    .event-dot {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      background: var(--panel);
+      border: 2px solid var(--teal);
+      color: var(--teal-2);
+      font-weight: 900;
+      font-size: 12px;
+      z-index: 1;
+    }
+
+    .event-body {
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      padding: 12px;
+    }
+
+    .event-body b {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .event-body span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .commands {
+      display: grid;
+      gap: 10px;
+    }
+
+    .command {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: #fffaf0;
+      padding: 10px;
+    }
+
+    .command pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .command button {
+      white-space: nowrap;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    .status-line:first-child {
+      padding-top: 0;
+    }
+
+    .status-line:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .badge {
+      padding: 4px 7px;
+      border: 1px solid currentColor;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .badge.green { color: var(--green); }
+    .badge.amber { color: var(--amber); }
+    .badge.red { color: var(--red); }
+    .badge.blue { color: var(--blue); }
+
+    footer {
+      margin-top: 26px;
+      padding: 18px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1060px) {
+      .hero,
+      .workflow,
+      .module-map {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-4,
+      .grid-3,
+      .risk-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        font-size: 56px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .shell {
+        width: min(100vw - 18px, 1480px);
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 36px;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+
+      .metric strong {
+        font-size: 38px;
+      }
+
+      .big-metrics,
+      .grid-4,
+      .grid-3,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .module-list {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .command {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      body::before,
+      .topbar,
+      .hero-actions,
+      .tabs,
+      .module-list button,
+      .command button {
+        display: none !important;
+      }
+
+      .shell {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .section,
+      .snapshot-board,
+      .panel,
+      .diagram,
+      .module-detail {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .tab-panel {
+        display: block !important;
+        margin-bottom: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <span class="seal">命</span>
+        <span>
+          <b>BaZiLogicEngine</b>
+          <span>AI 八字學習引擎簡明版</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Dashboard sections">
+        <a href="#workflow">點樣運作</a>
+        <a href="#architecture">放喺邊</a>
+        <a href="#logic">點樣判斷</a>
+        <a href="#status">而家狀態</a>
+        <a href="#roadmap">下一步</a>
+        <a href="#commands">常用指令</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="pulse"></span>2026-06-01 更新：Product Demo Candidate v0.3 claim-level citation 完成</div>
+          <h1 id="hero-title">一頁睇明：而家引擎識到咩、邊度未穩、下一步應該點做。</h1>
+          <p class="lead">
+            呢份 dashboard 係俾新 agent、工程師同 reviewer 快速接手用。講法會盡量用人話：先講現況，再講我哋距離終點仲差咩，最後講三個階段點樣推到產品級 Master System。
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#workflow">睇運作方式</a>
+            <a class="ghost-link" href="#commands">拎檢查指令</a>
+            <a class="ghost-link" href="#roadmap">睇下一步</a>
+          </div>
+        </div>
+
+        <aside class="snapshot-board" aria-labelledby="snapshot-title">
+          <div class="snapshot-title">
+            <div>
+              <h2 id="snapshot-title">而家一句講晒</h2>
+              <p style="margin: 7px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45;">比賽題內部成績仍守住 85%。Product Demo Candidate v0.3 已完成 claim-level citation：20 份 demo packets 覆蓋 5 張命盤；每個 final section 都有 3 條逐句 claims，各自帶 trace/evidence refs；customer JSON 仍無 raw reasoning，runtime 暫不改。</p>
+            </div>
+            <span class="date-chip">2026-06-01</span>
+          </div>
+          <div class="big-metrics">
+            <div class="metric ok">
+              <strong>85.0%</strong>
+              <span>比賽題第一選項命中<br>136 / 160，內部測試用</span>
+            </div>
+            <div class="metric info">
+              <strong>34.56%</strong>
+              <span>用神第一個答案中<br>最新重跑結果</span>
+            </div>
+            <div class="metric info">
+              <strong>20</strong>
+              <span>本地 demo packets<br>5 命盤 x 4 domains</span>
+            </div>
+            <div class="metric ok">
+              <strong>45.96%</strong>
+              <span>頭兩個用神有冇中<br>最新重跑結果</span>
+            </div>
+            <div class="metric warn">
+              <strong>663</strong>
+              <span>同一角色判斷打架<br>要繼續留意</span>
+            </div>
+          </div>
+          <div class="note-strip">
+            <b>最新 gate：</b>Product Demo Candidate v0.3 已完成；20 packets 全部 valid，citation validity 100%，每個 section 有 3 條 claim-level citations，provider disabled，raw reasoning / method trace / blocked conclusions 不入客人 JSON。
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="workflow" aria-labelledby="workflow-title">
+        <div class="section-title">
+          <div>
+            <h2 id="workflow-title">系統點樣學嘢</h2>
+            <p>簡單講：先把命盤排好，再由引擎判斷用神；如果課堂、古籍或錯題顯示有新規則，就先做「只讀試算」，即係只計如果改咗會點，唔郁真系統。只有試算安全、測試通過、又有來源支持，先可以改核心引擎。</p>
+          </div>
+          <span class="date-chip">來源：AGENTS.md / CURRENT_WORKFLOW.md</span>
+        </div>
+        <div class="section-body workflow">
+          <div class="diagram" role="img" aria-label="BaZiLogicEngine workflow diagram">
+            <svg viewBox="0 0 980 610" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L9,3 z" fill="#54483a"/>
+                </marker>
+                <style>
+                  .box{fill:#fffdf7;stroke:#bfb29f;stroke-width:2}
+                  .head{font:700 22px Georgia,serif;fill:#171411}
+                  .txt{font:15px Avenir Next,PingFang HK,sans-serif;fill:#403930}
+                  .tiny{font:12px Avenir Next,PingFang HK,sans-serif;fill:#69635a}
+                  .line{stroke:#54483a;stroke-width:2;fill:none;marker-end:url(#arrow)}
+                  .green{fill:#e8f3ec;stroke:#2e744f}
+                  .blue{fill:#e8f0f7;stroke:#285f8f}
+                  .amber{fill:#fff1d2;stroke:#b46c17}
+                  .red{fill:#fae8e3;stroke:#a33b2f}
+                  .teal{fill:#e6f4f1;stroke:#126c67}
+                </style>
+              </defs>
+              <rect x="25" y="24" width="930" height="560" rx="0" fill="rgba(255,250,240,.68)" stroke="#d3c9b7"/>
+              <rect class="box blue" x="60" y="70" width="240" height="92"/>
+              <text class="head" x="82" y="106">輸入命盤</text>
+              <text class="txt" x="82" y="132">出生資料 -> 四柱</text>
+              <text class="tiny" x="82" y="150">年月日時，先排準先講判斷</text>
+
+              <rect class="box teal" x="370" y="55" width="240" height="122"/>
+              <text class="head" x="392" y="92">核心判斷</text>
+              <text class="txt" x="392" y="119">睇季節、強弱、流通</text>
+              <text class="txt" x="392" y="143">再判格局同病位</text>
+              <text class="tiny" x="392" y="163">即係先睇個盤缺咩、太多咩</text>
+
+              <rect class="box amber" x="690" y="70" width="220" height="92"/>
+              <text class="head" x="712" y="106">綜合決定</text>
+              <text class="txt" x="712" y="132">幾種判法一齊比較</text>
+              <text class="tiny" x="712" y="150">唔係單靠一條公式</text>
+
+              <rect class="box green" x="60" y="255" width="240" height="112"/>
+              <text class="head" x="82" y="292">吸收知識</text>
+              <text class="txt" x="82" y="318">古籍、課堂筆記、OCR</text>
+              <text class="txt" x="82" y="342">先保留來源同條件</text>
+              <text class="tiny" x="82" y="362">有根有據先可考慮落規則</text>
+
+              <rect class="box" x="370" y="245" width="240" height="132"/>
+              <text class="head" x="392" y="282">診斷結果</text>
+              <text class="txt" x="392" y="309">邊啲係用神、喜神、忌神</text>
+              <text class="txt" x="392" y="333">落到天干地支</text>
+              <text class="tiny" x="392" y="356">方便之後判大運流年</text>
+
+              <rect class="box red" x="690" y="255" width="220" height="112"/>
+              <text class="head" x="712" y="292">安全檢查</text>
+              <text class="txt" x="712" y="318">睇舊案例有冇變差</text>
+              <text class="txt" x="712" y="342">跑測試，防止亂改</text>
+              <text class="tiny" x="712" y="362">唔可以偷用答案</text>
+
+              <rect class="box blue" x="60" y="455" width="240" height="82"/>
+              <text class="head" x="82" y="489">錯題雷達</text>
+              <text class="txt" x="82" y="516">搵出邊類題最常錯</text>
+
+              <rect class="box amber" x="370" y="445" width="240" height="102"/>
+              <text class="head" x="392" y="482">人手審核</text>
+              <text class="txt" x="392" y="508">有來源，再寫成清楚規則</text>
+              <text class="tiny" x="392" y="530">改真系統之前先試算</text>
+
+              <rect class="box green" x="690" y="455" width="220" height="82"/>
+              <text class="head" x="712" y="489">產品輸出</text>
+              <text class="txt" x="712" y="516">Python 先行，再同步 App</text>
+
+              <path class="line" d="M300 116 C330 116 340 116 370 116"/>
+              <path class="line" d="M610 116 C645 116 655 116 690 116"/>
+              <path class="line" d="M800 162 C800 204 610 204 560 245"/>
+              <path class="line" d="M300 311 C330 311 340 311 370 311"/>
+              <path class="line" d="M610 311 C645 311 655 311 690 311"/>
+              <path class="line" d="M800 367 C800 407 800 420 800 455"/>
+              <path class="line" d="M490 377 C490 410 490 420 490 445"/>
+              <path class="line" d="M300 496 C330 496 340 496 370 496"/>
+              <path class="line" d="M610 496 C645 496 655 496 690 496"/>
+              <path class="line" d="M180 455 C180 405 180 390 180 367"/>
+              <path class="line" d="M490 245 C490 205 270 205 250 162"/>
+            </svg>
+          </div>
+          <div class="legend">
+            <div class="panel">
+              <h3>這張圖點讀</h3>
+              <p>左上係命盤，右上係引擎點樣判。中間係最後診斷，底部係學習流程。重點係：新知識唔會即刻改真系統，先要試算同測試，確認唔會整壞舊判斷。</p>
+            </div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#e8f0f7"></span><span><b>資料輸入：</b>出生資料、四柱、題目同選項，先整理乾淨。</span></div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#e6f4f1"></span><span><b>核心判斷：</b>睇季節冷熱、日主強弱、五行流通同格局。</span></div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#fff1d2"></span><span><b>學習流程：</b>由錯題同課堂筆記搵新規則，再由人手審核。</span></div>
+            <div class="legend-item"><span class="legend-swatch" style="background:#fae8e3"></span><span><b>安全檢查：</b>改之前先試算，改之後要跑測試，避免越改越亂。</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture" aria-labelledby="architecture-title">
+        <div class="section-title">
+          <div>
+            <h2 id="architecture-title">資料同程式放喺邊</h2>
+            <p>呢部分只係幫人快速搵路：Python 放主要命理判斷，Swift 係 App 會用到的版本，知識庫放古籍同課堂資料，reports 放每次決定同檢查結果。</p>
+          </div>
+          <span class="date-chip">來源：ARCHITECTURE.md</span>
+        </div>
+        <div class="section-body">
+          <div class="module-map">
+            <div class="module-list" aria-label="Module selector">
+              <button class="module-button active" data-module="python">Python 主引擎</button>
+              <button class="module-button" data-module="swift">App 版本</button>
+              <button class="module-button" data-module="knowledge">知識庫</button>
+              <button class="module-button" data-module="mingli">比賽題資料</button>
+              <button class="module-button" data-module="reports">報告</button>
+              <button class="module-button" data-module="tools">檢查工具</button>
+            </div>
+            <article class="module-detail" id="module-detail" aria-live="polite"></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="logic" aria-labelledby="logic-title">
+        <div class="section-title">
+          <div>
+            <h2 id="logic-title">引擎點樣諗</h2>
+            <p>引擎唔係見到一個名詞就直接判好壞。佢要先問：今個命盤係咩季節？日主強唔強？邊個五行太多或太少？最後先把「十神」落到實際天干地支，咁先可以判行運。</p>
+          </div>
+          <span class="date-chip">來源：STRUCTURE_DESIGN_LOGIC_UIUX.md</span>
+        </div>
+        <div class="section-body">
+          <div class="tabs" role="tablist" aria-label="Logic tabs">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="tab-priority" id="priority-tab" data-tab="priority">先後次序</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tab-methods" id="methods-tab" data-tab="methods">幾種判法</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tab-contract" id="contract-tab" data-tab="contract">輸出結果</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="tab-mingli" id="mingli-tab" data-tab="mingli">比賽題學習</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-priority" role="tabpanel" aria-labelledby="priority-tab">
+            <div class="grid-3">
+              <div class="panel">
+                <h3>1. 先睇格局</h3>
+                <p>有啲命盤係特別格局，唔可以用普通「身強身弱」一句講晒。先分清楚格局，先唔會行錯方向。</p>
+                <div class="tag-row"><span class="tag">structure.py</span><span class="tag">StructureType</span></div>
+              </div>
+              <div class="panel">
+                <h3>2. 冷熱好重要</h3>
+                <p>夏天太熱、冬天太凍，第一件事可能係先調冷熱。即係命盤再好，都要先處理環境太熱或太凍嘅問題。</p>
+                <div class="tag-row"><span class="tag">climate.py</span><span class="tag">tiaohou.json</span></div>
+              </div>
+              <div class="panel">
+                <h3>3. 分清真幫手同假幫手</h3>
+                <p>有啲字表面似有用，但實際會幫倒忙。例如同一個五行，陰陽唔同，作用都可以完全唔同。</p>
+                <div class="tag-row"><span class="tag">stem_imagery.py</span><span class="tag">false god rules</span></div>
+              </div>
+              <div class="panel">
+                <h3>4. 搵問題同解藥</h3>
+                <p>命盤可能太弱、太熱、太塞、兩邊相沖。引擎要先搵出問題，再搵邊個字可以解決。</p>
+                <div class="tag-row"><span class="tag">bingyao</span><span class="tag">tongguan</span></div>
+              </div>
+              <div class="panel">
+                <h3>5. 用古籍規則修正</h3>
+                <p>課堂同古籍有啲細規則，但唔可以亂套。每條規則都要有條件，仲要有測試鎖住邊界。</p>
+                <div class="tag-row"><span class="tag">method_router.py</span><span class="tag">classical corrections</span></div>
+              </div>
+              <div class="panel">
+                <h3>6. 最後要落到天干地支</h3>
+                <p>只講「官殺」或「財」太籠統。真正行運時要知道係丙丁、巳午，定係其他天干地支，先判得到年份。</p>
+                <div class="tag-row"><span class="tag">transit_engine.py</span><span class="tag">stem/branch markers</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-methods" role="tabpanel" aria-labelledby="methods-tab">
+            <table class="score-table">
+              <thead>
+                <tr><th>判法</th><th>主要睇咩</th><th>要小心咩</th><th>主要檔案</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><b>扶抑</b></td><td>日主強定弱。</td><td>唔可以蓋過冷熱問題；財格身弱唔應該亂用比劫。</td><td><code>methods/fuyi_evaluator.py</code></td></tr>
+                <tr><td><b>調候</b></td><td>命盤太凍、太熱、太燥、太濕。</td><td>要跟 <code>tiaohou.json</code> 的 120 條資料，不返去舊硬編碼。</td><td><code>climate.py</code></td></tr>
+                <tr><td><b>天干意象</b></td><td>每個天干真正需要咩。</td><td>同一五行都要分陰陽，例如戊土同己土唔可以當一樣。</td><td><code>models/stem_imagery.py</code></td></tr>
+                <tr><td><b>病藥</b></td><td>命盤最大問題同解藥。</td><td>多個問題同時出現時，分數唔可以無限疊高。</td><td><code>methods/bingyao_evaluator.py</code></td></tr>
+                <tr><td><b>通關</b></td><td>兩邊衝突時，中間用咩打通。</td><td>要睇五行點流，唔係單點加分。</td><td><code>methods/tongguan_evaluator.py</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-panel" id="tab-contract" role="tabpanel" aria-labelledby="contract-tab">
+            <div class="workflow">
+              <div class="panel">
+                <h3>最後會輸出咩</h3>
+                <ul>
+                  <li><code>useful_gods</code>：最主要的用神，即係最想用嘅方向。</li>
+                  <li><code>favorable_gods</code>：輔助喜神，即係可以幫手，但未必係第一位。</li>
+                  <li><code>unfavorable_gods</code>：忌神，即係容易令問題加重嘅方向。</li>
+                  <li><code>useful_stems</code>：具體天干，例如甲、庚、壬。</li>
+                  <li><code>unfavorable_elements</code>：唔利嘅五行，例如火太旺就要標出火。</li>
+                  <li><code>unfavorable_stems</code> / <code>unfavorable_branches</code>：具體唔利嘅天干地支。</li>
+                  <li><code>axis_state</code>：簡單講係冷熱、強弱、流通順唔順。</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>幾條唔可以亂改的底線</h3>
+                <ul>
+                  <li>月令，即出生月份，影響好大，唔可以隨便改低。</li>
+                  <li>十神只係關係名，最後要落到五行、天干、地支。</li>
+                  <li>判大運流年時，地支一定要入判斷。</li>
+                  <li>一個十神係忌，唔代表成個五行都一定係忌。</li>
+                  <li>為咗救一兩條比賽題，唔可以整壞產品用神判斷。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-mingli" role="tabpanel" aria-labelledby="mingli-tab">
+            <div class="grid-3">
+              <div class="panel">
+                <h3>題目資料</h3>
+                <p>每條比賽題有出生資料、四柱、題目、四個選項同標準答案。主資料檔係 <code>data/benchmarks/mingli_bench_normalized.jsonl</code>。</p>
+              </div>
+              <div class="panel">
+                <h3>錯題雷達</h3>
+                <p>系統會把每題四個選項拆開比較，睇邊類特徵最容易錯。呢個只係研究工具，唔可以直接當產品答案。</p>
+              </div>
+              <div class="panel">
+                <h3>回填規則</h3>
+                <p>如果錯題雷達搵到有用線索，仍然要寫成清楚、可解釋、可測試的規則，先可以入引擎。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="status" aria-labelledby="status-title">
+        <div class="section-title">
+          <div>
+            <h2 id="status-title">而家進度</h2>
+            <p>下面啲數字分開兩件事：比賽題成績同產品用神成績。比賽題已經幾高，但產品用神仲有好多要學，所以而家重點係穩陣吸收課堂知識，而唔係為追分亂改。</p>
+          </div>
+          <span class="date-chip">最新檢查 2026-06-01</span>
+        </div>
+        <div class="section-body">
+          <div class="grid-4">
+            <div class="metric ok"><strong>136/160</strong><span>比賽題第一選項中<br>只代表內部題庫</span></div>
+            <div class="metric info"><strong>60%</strong><span>AI 顧問 MVP<br>粗略完成度</span></div>
+            <div class="metric warn"><strong>40%</strong><span>Master System<br>粗略完成度</span></div>
+            <div class="metric warn"><strong>65.0%</strong><span>研究模型分數<br>只用來搵錯題方向</span></div>
+            <div class="metric warn"><strong>50.0%</strong><span>新年份題目表現<br>提醒泛化未穩</span></div>
+            <div class="metric info"><strong>78.79%</strong><span>格局大方向命中</span></div>
+            <div class="metric info"><strong>34.56%</strong><span>用神第一個答案中<br>最新重跑結果</span></div>
+            <div class="metric ok"><strong>45.96%</strong><span>頭兩個用神有冇中<br>最新重跑結果</span></div>
+            <div class="metric info"><strong>45.19%</strong><span>product eval Top-2<br>270 trace 口徑</span></div>
+            <div class="metric info"><strong>29</strong><span>arbitration overwrite<br>product eval watch</span></div>
+            <div class="metric warn"><strong>0</strong><span>route sim 可即刻落 engine<br>全部要再分流</span></div>
+            <div class="metric info"><strong>15/12/2</strong><span>route queue<br>climate / structure / flow</span></div>
+            <div class="metric warn"><strong>5/5/2</strong><span>structure evidence<br>reject / report / simulation</span></div>
+            <div class="metric info"><strong>1/1/0</strong><span>FLOW_BLOCKED<br>simulation / report / runtime</span></div>
+            <div class="metric info"><strong>+3</strong><span>route ablation Top-2<br>observational only</span></div>
+            <div class="metric ok"><strong>20</strong><span>customer demo packets<br>5 命盤全部 validator valid</span></div>
+            <div class="metric ok"><strong>3</strong><span>claims per section<br>逐句 trace/evidence refs</span></div>
+            <div class="metric ok"><strong>100%</strong><span>packet citation validity<br>trace/evidence refs 有效</span></div>
+            <div class="metric ok"><strong>off</strong><span>real provider<br>v0.3 disabled</span></div>
+            <div class="metric risk"><strong>663</strong><span>同一角色判斷打架<br>仍要清理</span></div>
+            <div class="metric ok"><strong>0</strong><span>診斷無爆錯</span></div>
+            <div class="metric info"><strong>64</strong><span>由課堂筆記抽到的知識卡</span></div>
+            <div class="metric ok"><strong>8</strong><span>高信心 lesson RAG evidence<br>無 raw snippet</span></div>
+            <div class="metric ok"><strong>1</strong><span>evidence manifest<br>safe lessons by domain</span></div>
+            <div class="metric ok"><strong>1</strong><span>citation QA report<br>broad lesson refs filtered</span></div>
+            <div class="metric ok"><strong>100%</strong><span>每張卡都有來源</span></div>
+            <div class="metric ok"><strong>88.52%</strong><span>大部分卡有條件或例外</span></div>
+            <div class="metric warn"><strong>2</strong><span>已做試算<br>無改真系統</span></div>
+            <div class="metric warn"><strong>99</strong><span>財格見七殺碰到的現有判斷</span></div>
+            <div class="metric info"><strong>15</strong><span>新想法真正會改到的案例</span></div>
+            <div class="metric info"><strong>v0.2</strong><span>Analysis trace schema<br>含 timing evidence pack</span></div>
+            <div class="metric info"><strong>Qwen3.7</strong><span>OpenRouter provider<br>default disabled</span></div>
+            <div class="metric ok"><strong>39</strong><span>customer packet / guard / CLI<br>focused tests passed</span></div>
+            <div class="metric ok"><strong>16</strong><span>lesson card bridge<br>focused tests passed</span></div>
+            <div class="metric ok"><strong>936</strong><span>Python tests passed<br>v0.3 claim gate</span></div>
+            <div class="metric info"><strong>270</strong><span>product eval trace cases<br>固定 gate 已建立</span></div>
+            <div class="metric info"><strong>5</strong><span>cleanup commits<br>A+B / C / E / docs / bridge</span></div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <table class="score-table">
+            <thead>
+              <tr><th>題目類型</th><th>命中率</th><th>圖示</th><th>人話解讀</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>婚姻</td><td>41/44 = 93.18%</td><td><div class="bar"><i style="width:93.18%"></i></div></td><td>暫時最穩，唔需要急住改。</td></tr>
+              <tr><td>事業</td><td>22/25 = 88.00%</td><td><div class="bar"><i style="width:88%"></i></div></td><td>職業同薪金題已有窄範圍修正。</td></tr>
+              <tr><td>家庭</td><td>19/22 = 86.36%</td><td><div class="bar"><i style="width:86.36%"></i></div></td><td>仍有年份同家庭身份判斷要改善。</td></tr>
+              <tr><td>健康</td><td>14/17 = 82.35%</td><td><div class="bar"><i style="width:82.35%"></i></div></td><td>健康事件已補了一些清楚分類。</td></tr>
+              <tr><td>學業</td><td>9/11 = 81.82%</td><td><div class="bar"><i style="width:81.82%"></i></div></td><td>教育程度題已有小修正。</td></tr>
+              <tr><td>財運</td><td>9/13 = 69.23%</td><td><div class="bar"><i style="width:69.23%; background:var(--amber)"></i></div></td><td>值得繼續睇，但要先查來源，唔好亂加規則。</td></tr>
+              <tr><td>外貌</td><td>1/3 = 33.33%</td><td><div class="bar"><i style="width:33.33%; background:var(--red)"></i></div></td><td>題數太少，唔適合因一兩題大改。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-title">
+          <div>
+            <h2 id="roadmap-title">而家下一步係點</h2>
+            <p>今次最重要結論係：Product Demo Candidate v0.3 已完成 claim-level citation。客人 JSON 已移除 raw reasoning packet、method trace、blocked conclusions；demo 覆蓋由 1 張命盤擴到 5 張命盤共 20 份；每個 final section 都拆成 3 條逐句 claims，各自帶 trace/evidence refs。A/B 觀察層仍有 3 條候選、Top-2 可 +3，但未有可重用 deterministic runtime condition，所以 core runtime 暫不改。</p>
+          </div>
+          <span class="date-chip">下一個安全小步</span>
+        </div>
+        <div class="section-body risk-grid">
+          <div class="panel">
+            <h3>今次判斷</h3>
+            <div class="status-line"><span>核心方向</span><span class="badge green">引擎做底，LLM 做師傅式分析</span></div>
+            <div class="status-line"><span>終點計劃</span><span class="small-code">reports/three_phase_upgrade_plan_to_finish_20260531.md</span></div>
+            <div class="status-line"><span>核心引擎</span><span class="small-code">single-evidence 食傷放寬已 rejected</span></div>
+            <div class="status-line"><span>Provider</span><span class="small-code">OpenRouter / qwen/qwen3.7-max</span></div>
+            <div class="status-line"><span>下一個最有價值位置</span><span class="small-code">補 direct domain lesson cards</span></div>
+            <div class="status-line"><span>AI 可做咩</span><span class="small-code">分工分析、查來源、整理推理、由 verifier 檢查</span></div>
+            <div class="status-line"><span>訓練策略</span><span class="badge amber">RAG/evals 先行，fine-tune 後置</span></div>
+            <div class="status-line"><span>知識卡</span><span class="small-code">64 張 / 8 條 RAG evidence / 2 張已試算</span></div>
+            <div class="status-line"><span>知識卡質素</span><span class="small-code">全部有來源，雜訊很低</span></div>
+            <div class="status-line"><span>試算結論</span><span class="small-code">3 simulation candidates / 0 runtime candidates</span></div>
+            <div class="status-line"><span>Phase 0 scope</span><span class="small-code">reports/product_delivery_scope_20260601.md</span></div>
+            <div class="status-line"><span>packet contract</span><span class="small-code">customer_analysis_packet.v0.3 / claim-level refs</span></div>
+            <div class="status-line"><span>demo packets</span><span class="small-code">reports/customer_demo_packets/manifest.json / 20 packets</span></div>
+            <div class="status-line"><span>evidence manifest</span><span class="small-code">reports/customer_demo_packets/evidence_manifest.json</span></div>
+            <div class="status-line"><span>citation QA</span><span class="small-code">reports/customer_demo_packets/citation_quality_report_20260601.md</span></div>
+            <div class="status-line"><span>latest baseline</span><span class="small-code">34.56 / 45.96，role conflict 663</span></div>
+            <div class="status-line"><span>product eval</span><span class="small-code">33.70 / 45.19，arbitration 29</span></div>
+            <div class="status-line"><span>route ablation</span><span class="small-code">Top-2 +3 observational，MingLi runtime gate not patched</span></div>
+            <div class="status-line"><span>structure rescue</span><span class="small-code">5 reject / 5 report / 2 simulation / 0 runtime</span></div>
+            <div class="status-line"><span>主要風險</span><span class="badge amber">放寬 verifier 或 agent 自由發揮</span></div>
+          </div>
+
+          <div class="panel">
+            <h3>下一批要睇</h3>
+            <div class="status-line"><span>主題</span><span class="badge green">LLM 分析層 / 產品化</span></div>
+            <div class="status-line"><span>已完成</span><span class="small-code">trace / RAG / bridge / OpenRouter adapter</span></div>
+            <div class="status-line"><span>目前報告</span><span class="small-code">LLM_MASTER_SYSTEM_ROADMAP.md</span></div>
+            <div class="status-line"><span>知識吸收報告</span><span class="small-code">reports/lesson_transcript_knowledge_extraction_research_20260531.md</span></div>
+            <div class="status-line"><span>安全掣</span><span class="badge red">開住</span></div>
+            <div class="status-line"><span>訓練前要有</span><span class="badge red">eval set + 高質 reasoning traces</span></div>
+            <div class="status-line"><span>要保護</span><span class="badge amber">產品用神判斷</span></div>
+          </div>
+
+          <div class="timeline">
+            <div class="event">
+              <div class="event-dot">1</div>
+              <div class="event-body"><b>Phase 1：Analyst Layer MVP</b><span>把 trace v0.2、lesson RAG evidence、manager/specialist、critic 串成可引用、可驗證的分析出口。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">2</div>
+              <div class="event-body"><b>Phase 2：Learning Loop</b><span>建立 product eval、case memory、feedback queue；任何 engine patch 都走 Batch C2 gate。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">3</div>
+              <div class="event-body"><b>Phase 3：Product Master System</b><span>接 provider adapter、critic revision、產品模式、training traces、preference learning、長期監察。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">4</div>
+              <div class="event-body"><b>Batch C2 已擋下一條高風險改動</b><span>食傷 single-evidence 放寬會傷 MingLi timing，已退回 runtime；下一次要另做 route model。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">5</div>
+              <div class="event-body"><b>Product Delivery Phase 0 完成</b><span>baseline / scope 已鎖；3 條候選只接受做下一輪條件研究；runtime 保持不變。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">6</div>
+              <div class="event-body"><b>Customer packet contract v0.2 完成</b><span>20 個 demo packets 已生成，raw reasoning 與 method trace 已從客人 JSON 移除，provider disabled。</span></div>
+            </div>
+            <div class="event">
+              <div class="event-dot">7</div>
+              <div class="event-body"><b>v0.3：Claim-level citation 完成</b><span>每個 final section 拆成 3 條 claims；逐句都有 trace/evidence refs。</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="commands" aria-labelledby="commands-title">
+        <div class="section-title">
+          <div>
+            <h2 id="commands-title">常用檢查指令</h2>
+            <p>下面係常用檢查工具。普通讀者唔需要理會細節；工程或 agent 要接手時，可以按 Copy 跑一次，確認目前數字同測試狀態。</p>
+          </div>
+          <span class="date-chip">在 repo 根目錄執行</span>
+        </div>
+        <div class="section-body commands">
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/mingli_briefing.py --worst 40</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/mingli_briefing.py --worst 40">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/baseline_report.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/baseline_report.py">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_mingli_runner.py BaZiPython/tests/test_mingli_option_features.py BaZiPython/tests/test_mingli_ltr_ranker.py -q</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_mingli_runner.py BaZiPython/tests/test_mingli_option_features.py BaZiPython/tests/test_mingli_ltr_ranker.py -q">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/build_mingli_option_features.py
+PYTHONPATH=BaZiPython:. python3 tools/train_mingli_ltr_ranker.py
+PYTHONPATH=BaZiPython:. python3 tools/analyze_mingli_ltr_clusters.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/build_mingli_option_features.py
+PYTHONPATH=BaZiPython:. python3 tools/train_mingli_ltr_ranker.py
+PYTHONPATH=BaZiPython:. python3 tools/analyze_mingli_ltr_clusters.py">Copy</button>
+          </div>
+            <div class="command">
+              <pre>PYTHONPATH=BaZiPython:. python3 tools/useful_god_candidate_preservation_ablation_sim.py</pre>
+              <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/useful_god_candidate_preservation_ablation_sim.py">Copy</button>
+            </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/useful_god_failure_trace.py
+PYTHONPATH=BaZiPython:. python3 tools/run_product_eval.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/useful_god_failure_trace.py
+PYTHONPATH=BaZiPython:. python3 tools/run_product_eval.py">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/useful_god_route_model_sim.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/useful_god_route_model_sim.py">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/structure_rescue_route_sim.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/structure_rescue_route_sim.py">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/flow_blocked_route_sim.py
+PYTHONPATH=BaZiPython:. python3 tools/structure_rescue_evidence_review.py
+PYTHONPATH=BaZiPython:. python3 tools/route_candidate_ablation.py</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/flow_blocked_route_sim.py
+PYTHONPATH=BaZiPython:. python3 tools/structure_rescue_evidence_review.py
+PYTHONPATH=BaZiPython:. python3 tools/route_candidate_ablation.py">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_flow_blocked_route_sim.py BaZiPython/tests/test_structure_rescue_evidence_review.py BaZiPython/tests/test_route_candidate_ablation.py BaZiPython/tests/test_structure_rescue_route_sim.py BaZiPython/tests/test_useful_god_route_model_sim.py BaZiPython/tests/test_product_eval_protocol.py BaZiPython/tests/test_method_router_candidate_preservation.py -q</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_flow_blocked_route_sim.py BaZiPython/tests/test_structure_rescue_evidence_review.py BaZiPython/tests/test_route_candidate_ablation.py BaZiPython/tests/test_structure_rescue_route_sim.py BaZiPython/tests/test_useful_god_route_model_sim.py BaZiPython/tests/test_product_eval_protocol.py BaZiPython/tests/test_method_router_candidate_preservation.py -q">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_customer_analysis_packet_contract.py BaZiPython/tests/test_customer_traceable_ai.py BaZiPython/tests/test_customer_packet_cli.py -q</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_customer_analysis_packet_contract.py BaZiPython/tests/test_customer_traceable_ai.py BaZiPython/tests/test_customer_packet_cli.py -q">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/customer_packet_cli.py --fixture xin_si_sample --question '2027年財運點？' --format llm-json --llm-provider provider</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/customer_packet_cli.py --fixture xin_si_sample --question '2027年財運點？' --format llm-json --llm-provider provider">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 tools/lesson_cards_to_rag_evidence.py --input-jsonl reports/lesson_knowledge_cards.jsonl --output-jsonl reports/lesson_rag_evidence.jsonl</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 tools/lesson_cards_to_rag_evidence.py --input-jsonl reports/lesson_knowledge_cards.jsonl --output-jsonl reports/lesson_rag_evidence.jsonl">Copy</button>
+          </div>
+          <div class="command">
+            <pre>PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_lesson_knowledge_cards.py BaZiPython/tests/test_lesson_knowledge_card_simulation.py -q</pre>
+            <button data-copy="PYTHONPATH=BaZiPython:. python3 -m pytest BaZiPython/tests/test_lesson_knowledge_cards.py BaZiPython/tests/test_lesson_knowledge_card_simulation.py -q">Copy</button>
+          </div>
+          <div class="command">
+            <pre>cd BaZiPython &amp;&amp; python3 -m pytest tests/ -q</pre>
+            <button data-copy="cd BaZiPython && python3 -m pytest tests/ -q">Copy</button>
+          </div>
+          <div class="command">
+            <pre>swift test --quiet</pre>
+            <button data-copy="swift test --quiet">Copy</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      這頁係一份簡明交接入口，主要根據 <code>CURRENT_WORKFLOW.md</code>、<code>reports/REPORT_INDEX.md</code>、<code>docs/analysis_trace_schema.md</code>、<code>LLM_MASTER_SYSTEM_ROADMAP.md</code> 同最新檢查結果整理。
+    </footer>
+  </div>
+
+  <script>
+    const moduleData = {
+      python: {
+        title: "Python 主引擎",
+        subtitle: "最主要的命理判斷放喺呢度",
+        body: [
+          "簡單講，Python 係實驗同判斷主力。大部分新規則都會先在呢度試。",
+          "最敏感的位置係 method_router.py，因為它會決定最後用神排序；今次 Batch C2 已拒絕 single-evidence 食傷放寬，之後再改要重新跑 gate。",
+          "如果 Python 規則確認安全，之後先同步到 App 版本。"
+        ],
+        files: ["BaZiPython/bazi_engine/logic/method_router.py", "BaZiPython/bazi_engine/logic/structure.py", "BaZiPython/tests/"]
+      },
+      swift: {
+        title: "App 版本",
+        subtitle: "將來產品會用到的 Swift 版本",
+        body: [
+          "Swift 係 App 會用到的版本，所以要跟 Python 判斷保持一致。",
+          "如果 Python 改了核心邏輯，Swift 通常都要跟住檢查。",
+          "今次 Python engine 有窄版 helper commit，但未同步 Swift；如果產品 runtime 要用同一邏輯，下一輪要做 Swift parity review。"
+        ],
+        files: ["Sources/BaZiLogicEngine/logic/DynamicRouter.swift", "Sources/BaZiLogicEngine/models/", "Tests/Tests/BaZiLogicEngineTests.swift"]
+      },
+      knowledge: {
+        title: "知識庫",
+        subtitle: "古籍、課堂筆記、OCR 都放入來",
+        body: [
+          "知識庫用來保存來源，不係直接替引擎作答。",
+          "課堂 transcript 已抽成 64 張知識卡，其中 8 條高信心內容已安全轉成 RAG evidence，預設不帶 raw snippet。",
+          "如果要把課堂內容變成真規則，要先證明它唔會破壞舊案例。"
+        ],
+        files: ["knowledge_base/古籍/knowledge_base.md", "knowledge_pipeline/", "reports/lesson_rag_evidence.jsonl"]
+      },
+      mingli: {
+        title: "比賽題資料",
+        subtitle: "用來練習推理，不等於產品真實準確率",
+        body: [
+          "目前 160 條比賽題入面，第一選項命中 136 條。",
+          "呢個成績只代表這批題目，不代表所有真實案例都會咁準。",
+          "比賽題主要用來搵錯題模式，再回頭補清楚規則。"
+        ],
+        files: ["data/benchmarks/mingli_bench_normalized.jsonl", "BaZiPython/bazi_engine/benchmarks/mingli_runner.py", "BaZiPython/bazi_engine/benchmarks/mingli_claims.py"]
+      },
+      reports: {
+        title: "報告",
+        subtitle: "記低每次做咗咩、點解咁做",
+        body: [
+          "REPORT_INDEX.md 係報告入口，幫新 agent 知道邊份係最新。",
+          "今次最重要入口係 upgrade_checkpoints.md、dirty_worktree_cleanup_map_20260531.md 同 lesson_rag_evidence.jsonl。",
+          "舊報告可以查歷史，但唔應該當成目前狀態。"
+        ],
+        files: ["reports/REPORT_INDEX.md", "reports/upgrade_checkpoints.md", "reports/mingli_ltr_metrics.md"]
+      },
+      tools: {
+        title: "檢查工具",
+        subtitle: "用來確認分數、測試同報告有冇同步",
+        body: [
+          "每次開工最好先跑 baseline report，避免用到過期數字。",
+          "如果研究比賽題錯題，可以重建特徵同錯題分析。",
+          "但今個階段最重要係小步、安全、可解釋。"
+        ],
+        files: ["tools/baseline_report.py", "tools/mingli_briefing.py", "tools/train_mingli_ltr_ranker.py"]
+      }
+    };
+
+    const detail = document.querySelector("#module-detail");
+    const moduleButtons = document.querySelectorAll(".module-button");
+
+    function renderModule(key) {
+      const item = moduleData[key];
+      detail.innerHTML = `
+        <h3>${item.title}</h3>
+        <p style="margin:0 0 16px;color:var(--muted);font-weight:800">${item.subtitle}</p>
+        ${item.body.map(text => `<p style="margin:0 0 12px">${text}</p>`).join("")}
+        <div class="tag-row">${item.files.map(file => `<span class="tag">${file}</span>`).join("")}</div>
+      `;
+      moduleButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.module === key));
+    }
+
+    moduleButtons.forEach(btn => {
+      btn.addEventListener("click", () => renderModule(btn.dataset.module));
+    });
+
+    renderModule("python");
+
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(other => other.setAttribute("aria-selected", "false"));
+        panels.forEach(panel => panel.classList.remove("active"));
+        tab.setAttribute("aria-selected", "true");
+        document.querySelector(`#tab-${tab.dataset.tab}`).classList.add("active");
+      });
+    });
+
+    document.querySelectorAll("[data-copy]").forEach(button => {
+      button.addEventListener("click", async () => {
+        const text = button.getAttribute("data-copy");
+        try {
+          await navigator.clipboard.writeText(text);
+          const old = button.textContent;
+          button.textContent = "Copied";
+          setTimeout(() => { button.textContent = old; }, 1200);
+        } catch (error) {
+          button.textContent = "Select";
+          setTimeout(() => { button.textContent = "Copy"; }, 1200);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Master Wahyan Private Dashboard</title>
+  <style>
+    :root {
+      --bg: #10100e;
+      --panel: #f5f0e6;
+      --panel-2: #e9dfcf;
+      --ink: #1c1914;
+      --muted: #6b6256;
+      --line: #c8b99f;
+      --gold: #b88d42;
+      --green: #276f58;
+      --red: #99413b;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .28);
+      font-family: "Avenir Next", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(184, 141, 66, .24), transparent 34%),
+        radial-gradient(circle at 84% 18%, rgba(39, 111, 88, .28), transparent 28%),
+        var(--bg);
+    }
+
+    main {
+      width: min(1120px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 44px 0;
+    }
+
+    .shell {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, .22);
+      box-shadow: var(--shadow);
+      min-height: calc(100vh - 88px);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+      padding: clamp(24px, 5vw, 52px);
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .42), transparent),
+        repeating-linear-gradient(90deg, rgba(28, 25, 20, .04) 0 1px, transparent 1px 46px);
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--green);
+      font: 700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font: 700 clamp(38px, 7vw, 78px)/.9 Georgia, "Songti TC", serif;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: #3d372e;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .logout {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 16px;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255, 255, 255, .4);
+    }
+
+    .logout:hover { background: white; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: clamp(18px, 4vw, 32px);
+    }
+
+    .card {
+      display: grid;
+      gap: 18px;
+      min-height: 230px;
+      padding: 24px;
+      color: inherit;
+      text-decoration: none;
+      background: rgba(255, 255, 255, .62);
+      border: 1px solid var(--line);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold);
+      box-shadow: 0 20px 44px rgba(61, 46, 17, .16);
+    }
+
+    .card h2 {
+      margin: 0;
+      font: 700 28px/1.05 Georgia, "Songti TC", serif;
+      letter-spacing: 0;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-self: end;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      padding: 6px 9px;
+      color: #3d372e;
+      background: var(--panel-2);
+      font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px clamp(18px, 4vw, 32px) 28px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      main { width: 100%; padding: 0; }
+      .shell { min-height: 100vh; }
+      header { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .logout { width: fit-content; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="shell">
+      <header>
+        <div>
+          <p class="kicker">Private Codex Project Room</p>
+          <h1>Project dashboards, behind one locked door.</h1>
+          <p class="summary">集中查看 Codex project dashboard。此子站由 server-side password session 保護，不會放入公開主站 bundle。</p>
+        </div>
+        <a class="logout" href="/logout">Logout</a>
+      </header>
+
+      <section class="grid" aria-label="Project dashboards">
+        <a class="card" href="/dashboards/astrology-sessions/">
+          <div>
+            <h2>Astrology Sessions</h2>
+            <p>Western/Vedic astrology SaaS project dashboard and report overview.</p>
+          </div>
+          <div class="meta">
+            <span class="pill">HTML REPORT</span>
+            <span class="pill">ZH-HK</span>
+          </div>
+        </a>
+
+        <a class="card" href="/dashboards/bazi-logic-engine/">
+          <div>
+            <h2>BaZiLogicEngine</h2>
+            <p>Core BaZi rules engine progress, delivery status, risk notes, and project map.</p>
+          </div>
+          <div class="meta">
+            <span class="pill">HTML REPORT</span>
+            <span class="pill">ENGINE</span>
+          </div>
+        </a>
+
+        <a class="card" href="/dashboards/murmura/">
+          <div>
+            <h2>Murmura</h2>
+            <p>Product update dashboard for the Murmura project stream.</p>
+          </div>
+          <div class="meta">
+            <span class="pill">HTML REPORT</span>
+            <span class="pill">APP</span>
+          </div>
+        </a>
+
+        <a class="card" href="/dashboards/soundscribe/">
+          <div>
+            <h2>SoundScribe</h2>
+            <p>SoundScribe roadmap, UI/UX notes, release status, and project dashboard.</p>
+          </div>
+          <div class="meta">
+            <span class="pill">HTML REPORT</span>
+            <span class="pill">MAC APP</span>
+          </div>
+        </a>
+      </section>
+
+      <footer>
+        <span>Private dashboard for Master Wahyan projects.</span>
+        <span>Access controlled by Cloudflare Pages Functions.</span>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

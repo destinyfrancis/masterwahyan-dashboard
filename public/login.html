@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Login | Master Wahyan Dashboard</title>
+  <style>
+    :root {
+      --bg: #10100e;
+      --paper: #f5f0e6;
+      --ink: #1d1913;
+      --muted: #6b6256;
+      --line: #c8b99f;
+      --gold: #b88d42;
+      --red: #99413b;
+      font-family: "Avenir Next", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(184, 141, 66, .32), transparent 34%),
+        radial-gradient(circle at 82% 18%, rgba(39, 111, 88, .28), transparent 28%),
+        var(--bg);
+    }
+
+    main {
+      width: min(440px, 100%);
+      background: var(--paper);
+      border: 1px solid rgba(255, 255, 255, .25);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .34);
+      padding: clamp(24px, 6vw, 42px);
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: #276f58;
+      font: 700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font: 700 42px/.95 Georgia, "Songti TC", serif;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .68);
+      color: var(--ink);
+      font: inherit;
+    }
+
+    input:focus {
+      outline: 2px solid rgba(184, 141, 66, .35);
+      outline-offset: 2px;
+    }
+
+    button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 14px;
+      border: 0;
+      background: var(--ink);
+      color: var(--paper);
+      cursor: pointer;
+      font: 800 14px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    button:hover { background: #342d23; }
+
+    .error {
+      display: none;
+      margin-top: 14px;
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .error[data-visible="true"] { display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="kicker">Private Access</p>
+    <h1>Locked dashboard.</h1>
+    <p>輸入密碼後才可查看 project dashboard。Session 會以安全 cookie 保存。</p>
+
+    <form id="login-form" method="post" action="/api/login">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+      <button type="submit">Unlock</button>
+      <div id="error" class="error" role="alert">密碼不正確，請再試一次。</div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.querySelector("#login-form");
+    const error = document.querySelector("#error");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      error.dataset.visible = "false";
+
+      const formData = new FormData(form);
+      const response = await fetch("/api/login", {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin"
+      });
+
+      if (response.ok) {
+        const redirectTo = new URLSearchParams(window.location.search).get("next") || "/";
+        window.location.assign(redirectTo.startsWith("/") ? redirectTo : "/");
+        return;
+      }
+
+      error.dataset.visible = "true";
+    });
+  </script>
+</body>
+</html>

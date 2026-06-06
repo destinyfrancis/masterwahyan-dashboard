@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Murmura Project Update Dashboard</title>
+  <style>
+    :root {
+      --ink: #151515;
+      --muted: #666;
+      --line: #d8d8d8;
+      --paper: #f6f5f2;
+      --panel: #fff;
+      --accent: #e65a1f;
+      --good: #16734a;
+      --warn: #a86100;
+      --risk: #b42318;
+      --mono: "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    .shell { max-width: 1220px; margin: 0 auto; padding: 28px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      border: 1px solid var(--ink);
+      background: var(--panel);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .hero-main { padding: 28px; border-right: 1px solid var(--ink); }
+    .hero-side { padding: 24px; background: #171717; color: #fff; }
+    .label {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0 14px;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 0 0 6px; font-size: 15px; }
+    p { margin: 0 0 10px; }
+    ul, ol { margin: 0; padding-left: 20px; }
+    li { margin: 7px 0; }
+    code {
+      font-family: var(--mono);
+      background: #f0eee8;
+      border: 1px solid #ded8ce;
+      border-radius: 4px;
+      padding: 1px 4px;
+    }
+
+    .lede { max-width: 860px; font-size: 18px; }
+    .verdict { font-size: 24px; font-weight: 850; line-height: 1.25; }
+    .side-note { color: #d8d8d8; font-size: 14px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .panel {
+      grid-column: span 12;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 18px;
+    }
+
+    .half { grid-column: span 6; }
+    .third { grid-column: span 4; }
+    .two-third { grid-column: span 8; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 124px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fbfaf7;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .risk { color: var(--risk); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      background: #fbfaf7;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .table th, .table td {
+      border-top: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: #fbfaf7;
+      padding: 12px 14px;
+    }
+
+    @media (max-width: 920px) {
+      .shell { padding: 18px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-main { border-right: 0; border-bottom: 1px solid var(--ink); }
+      .half, .third, .two-third { grid-column: span 12; }
+      .metric-grid, .cards { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .metric-grid, .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <span>Murmura project dashboard</span>
+      <span>Updated: 2026-05-28 22:00 BST</span>
+    </div>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div class="label">最新情況</div>
+        <h1>方向係啱，依家由 demo 進入 beta 前穩定期。</h1>
+        <p class="lede">
+          Murmura 而家唔再只係「可以示範一下」：核心流程已經跑得通，開跑前會先檢查模型、平台、成本同設定；
+          出錯時亦會講清楚原因。最新測試顯示 Twitter、Reddit、雙平台同場都可以產生有效動作。
+        </p>
+      </div>
+      <aside class="hero-side">
+        <div class="label">一句講晒</div>
+        <p class="verdict">可以開始做 public beta 準備，但未應該向外承諾「任何場景都一樣準」。</p>
+        <p class="side-note">下一步重點係連續穩定測試、收窄首批玩法、同令每份結果更易明更可信。</p>
+      </aside>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>目前已確認</h2>
+        <div class="metric-grid">
+          <div class="metric">
+            <strong class="good">2980</strong>
+            <span>tests passed</span>
+            <p><code>make test</code> 全綠，沒有失敗測試。</p>
+          </div>
+          <div class="metric">
+            <strong class="good">3 / 3</strong>
+            <span>live gates passed</span>
+            <p>Twitter、Reddit、Twitter+Reddit 都已成功跑過。</p>
+          </div>
+          <div class="metric">
+            <strong class="good">4+</strong>
+            <span>effective actions</span>
+            <p>最新雙平台 run 有 4 個有效動作，不再係空跑。</p>
+          </div>
+          <div class="metric">
+            <strong class="warn">未完成</strong>
+            <span>5-run soak</span>
+            <p>未做每條 gate 連續 5 次，主要係節省 API 成本。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel two-third">
+        <h2>用簡單講法解釋</h2>
+        <div class="callout">
+          <p><strong>以前：</strong>好似開車先發現冇油、路唔通、導航壞咗。</p>
+          <p><strong>而家：</strong>開車前先檢查油、路線、車況；唔得就即刻話你知，唔會行到一半先爆。</p>
+        </div>
+        <ul>
+          <li>系統會開跑前檢查模型能否使用，避免浪費時間同錢。</li>
+          <li>如果 simulation 出錯，會有較清楚原因，例如模型問題、冇有效動作、超時、平台問題。</li>
+          <li>首頁已開始引導用戶用 4 條 beta workflow，而唔係一開始就講「乜都得」。</li>
+          <li>報告頁開始加入信心、驗證、artifact/failure 資訊，方便用戶知道應該點睇結果。</li>
+        </ul>
+      </div>
+
+      <div class="panel third">
+        <h2>最新 live run</h2>
+        <ul>
+          <li><code>make smoke-live-twitter</code>: passed，actions 4。</li>
+          <li><code>make smoke-live-reddit</code>: passed，actions 5。</li>
+          <li><code>make smoke-live</code>: passed，session <code>29c4ae5f</code>，actions 4，duration 49.6s。</li>
+          <li>結果已記錄到 <code>logs/smoke_live_results.jsonl</code>。</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>四條先主打嘅 beta 玩法</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>公眾輿論</h3>
+            <p>模擬一件新聞、政策或事件出街後，不同群體點反應。</p>
+          </div>
+          <div class="card">
+            <h3>B2B 供應鏈</h3>
+            <p>模擬供應商、客戶、金融壓力、延誤點樣互相影響。</p>
+          </div>
+          <div class="card">
+            <h3>公司競爭</h3>
+            <p>模擬加價、減價、入新市場、合作或成本壓力。</p>
+          </div>
+          <div class="card">
+            <h3>政策衝擊</h3>
+            <p>模擬政府新措施對市民、公司、輿論同市場情緒嘅影響。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel half">
+        <h2>仍然要小心嘅地方</h2>
+        <ol>
+          <li><strong>穩定性：</strong>單次成功唔等於長期穩，要連續跑多幾次。</li>
+          <li><strong>準確性：</strong>Simulation 係幫人理解可能路徑，不係預言未來。</li>
+          <li><strong>模型依賴：</strong>外部模型 provider 有機會改 model、限流、或者暫時失效。</li>
+          <li><strong>產品承諾：</strong>暫時應該話「幫你排練情景」，唔好話「任何事都準確預測」。</li>
+        </ol>
+      </div>
+
+      <div class="panel half">
+        <h2>下一步建議</h2>
+        <ol>
+          <li>跑 5 次 Twitter、5 次 Reddit、5 次雙平台，確認穩定。</li>
+          <li>為 4 條 beta workflow 各自準備 5-10 個固定例子。</li>
+          <li>每份報告都清楚顯示：信心、限制、今次設定、錯誤紀錄、可下載資料。</li>
+          <li>做一個簡單 beta onboarding，令非技術用戶一開頁就知點用。</li>
+          <li>之後先考慮多用戶、配額、收費、隊列容量等 SaaS 功能。</li>
+        </ol>
+      </div>
+
+      <div class="panel">
+        <h2>最新驗證命令</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>結果</th>
+              <th>意思</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>make test</code></td>
+              <td><span class="badge good">2980 passed</span></td>
+              <td>主要 backend 測試全部通過。</td>
+            </tr>
+            <tr>
+              <td><code>frontend typecheck</code></td>
+              <td><span class="badge good">passed</span></td>
+              <td>前端型別檢查通過。</td>
+            </tr>
+            <tr>
+              <td><code>frontend build</code></td>
+              <td><span class="badge good">passed</span></td>
+              <td>前端可以成功打包；仍有既有 chunk size warning。</td>
+            </tr>
+            <tr>
+              <td><code>make smoke-live</code></td>
+              <td><span class="badge good">passed</span></td>
+              <td>Twitter + Reddit 同場 simulation 成功，actions &gt; 0。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

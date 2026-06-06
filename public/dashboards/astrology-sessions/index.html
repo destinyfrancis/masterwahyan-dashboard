@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astrology Sessions SaaS Dashboard</title>
+  <style>
+    :root {
+      --ink: #171614;
+      --muted: #645f58;
+      --paper: #f7f2ea;
+      --panel: #fffaf2;
+      --line: #d9ccbb;
+      --green: #2f7b65;
+      --amber: #a86922;
+      --red: #a9473b;
+      --blue: #355f91;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); }
+    main { width: min(1180px, calc(100vw - 32px)); margin: 0 auto; padding: 28px 0 42px; }
+    header, section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; margin-bottom: 14px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(34px, 5vw, 62px); line-height: .95; margin-bottom: 12px; letter-spacing: 0; }
+    h2 { font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 14px; }
+    p, li, td, th { line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+    .kicker { color: var(--amber); font: 700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: .08em; }
+    .summary { max-width: 900px; font-size: 18px; color: #2d2924; }
+    .grid { display: grid; gap: 12px; }
+    .four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .metric, .risk { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: rgba(255,255,255,.38); }
+    .metric strong { display: block; font-size: 30px; line-height: 1; color: var(--green); margin-bottom: 8px; }
+    .metric span, .risk p { color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+    .ok { color: var(--green); font-weight: 800; }
+    .warn { color: var(--amber); font-weight: 800; }
+    .blocker { color: var(--red); font-weight: 800; }
+    .pill { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 4px 8px; margin: 0 4px 4px 0; background: #fff; font-size: 12px; }
+    @media (max-width: 880px) { .four, .two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="kicker">Latest verified / 2026-06-03 02:20 BST</p>
+      <h1>Astrology Sessions SaaS</h1>
+      <p class="summary">Latest report checkpoint completed the remaining five-topic PDF suite for the unfinished astrology roadmap: career/money timing, Vedic D1/D9 + Vimshottari, birth-time sensitivity and event validation, 2026-2043 life blueprint, and AI no-fantasy QA framework. Each new report has editable Markdown, preview HTML, and final PDF output. Validation used the existing Markdown to Pandoc HTML to Chrome-headless PDF workflow with <code>reports/report_print.css</code>; <code>pdfinfo</code> confirmed all five PDFs are A4, unencrypted, and JavaScript-free, with page counts of 10-11 pages; <code>pdftotext</code> checks confirmed title/core-year anchors plus <code>Western</code>, <code>Vedic</code>, <code>可信度</code>, <code>保留位</code>, and appendix content. No SaaS API/product code behavior changed in this report-only pass.</p>
+      <p>
+        <span class="pill">Source direction: v6 plan</span>
+        <span class="pill">Calculated-first reports</span>
+        <span class="pill">OpenRouter mock-first/live opt-in</span>
+        <span class="pill">Stripe mock-first/live opt-in</span>
+        <span class="pill">Server-side credits</span>
+        <span class="pill">Accelerated execution enabled</span>
+        <span class="pill">Local dashboard served at /dashboard</span>
+        <span class="pill">Saved-profile paid reports wired</span>
+        <span class="pill">ASGI adapter added</span>
+        <span class="pill">SQL migration runner added</span>
+        <span class="pill">Deployment readiness preflight added</span>
+        <span class="pill">Dashboard readiness panel added</span>
+        <span class="pill">Env-template API added</span>
+        <span class="pill">Env audit API added</span>
+        <span class="pill">Env bootstrap API added</span>
+        <span class="pill">Blocker handoff added</span>
+        <span class="pill">Readiness remediation added</span>
+        <span class="pill">Env-file readiness validation added</span>
+        <span class="pill">Upstash rate-limit adapter added</span>
+        <span class="pill">Local legal routes published</span>
+        <span class="pill">Operator abuse review added</span>
+        <span class="pill">Abuse cooldown added</span>
+        <span class="pill">Session revocation added</span>
+        <span class="pill">Trusted auth gateway adapter added</span>
+        <span class="pill">Trusted-auth smoke script added</span>
+        <span class="pill">Trusted-auth email guard added</span>
+        <span class="pill">Stripe checkout smoke script added</span>
+        <span class="pill">Subscription checkout payload fixed</span>
+        <span class="pill">Stripe webhook audit added</span>
+        <span class="pill">Webhook replay smoke script added</span>
+        <span class="pill">OpenRouter routing matrix added</span>
+        <span class="pill">Readiness verification plan added</span>
+        <span class="pill">Public controls smoke added</span>
+        <span class="pill">Storefront public smoke added</span>
+        <span class="pill">Public shared report reader added</span>
+        <span class="pill">Layered report reader added</span>
+        <span class="pill">Markdown report export added</span>
+        <span class="pill">Calendar report export added</span>
+        <span class="pill">CSV evidence export added</span>
+        <span class="pill">Print/PDF report view added</span>
+        <span class="pill">Public teaser storefront added</span>
+        <span class="pill">Storefront package catalog added</span>
+        <span class="pill">Storefront runtime config added</span>
+        <span class="pill">Storefront location presets added</span>
+        <span class="pill">Storefront location search added</span>
+        <span class="pill">Storefront timezone resolver added</span>
+        <span class="pill">Preview email gate added</span>
+        <span class="pill">Preview email consent added</span>
+        <span class="pill">Preview lead audit added</span>
+        <span class="pill">Preview lead retention prune added</span>
+        <span class="pill">Preview event telemetry added</span>
+        <span class="pill">Preview event retention prune added</span>
+        <span class="pill">Retention maintenance runner added</span>
+        <span class="pill">Postgres retention SQL runner added</span>
+        <span class="pill">Shared-report noindex/no-referrer added</span>
+        <span class="pill">Robots/sitemap publication controls added</span>
+        <span class="pill">Public header smoke added</span>
+        <span class="pill">Public base URL readiness gate added</span>
+        <span class="pill">OrbSifu provider plan added</span>
+        <span class="pill">Render staging blueprint added</span>
+        <span class="pill">PII-safe error logging added</span>
+        <span class="pill">Storefront UIUX polish added</span>
+        <span class="pill">Public FAQ added</span>
+        <span class="pill">Payment flow copy added</span>
+        <span class="pill">Refund/support legal copy added</span>
+        <span class="pill">Astrology storefront separated from shared backbone</span>
+        <span class="pill">Automation stop gate armed</span>
+        <span class="pill">Evidence Pack v1 added</span>
+        <span class="pill">Vedic cache parser added</span>
+        <span class="pill">Relationship evidence added</span>
+        <span class="pill">CLI evidence workflows added</span>
+        <span class="pill">2027-2029 love action PDF added</span>
+        <span class="pill">5-topic PDF suite completed</span>
+      </p>
+    </header>
+
+    <section>
+      <h2>Plain Status</h2>
+      <table>
+        <thead><tr><th>Question</th><th>Simple answer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>目前爭幾遠？</td>
+            <td>Local/internal demo 約 <strong>92-94%</strong> ready；public beta 約 <strong>60-65%</strong> ready。</td>
+          </tr>
+          <tr>
+            <td>係咪仲要大改 code？</td>
+            <td>暫時唔係。最新 handoff 係 <code>local_blocker=0</code>，代表已知本地工程卡位已清；主要爭外部帳戶、網址、secret、provider 驗證。</td>
+          </tr>
+          <tr>
+            <td>最先做咩？</td>
+            <td>揀定並買 domain：<code>astrosifu.com</code> 最清楚、<code>orbsifu.com</code> 最有品牌感；之後用 <code>render.yaml</code> 開 hidden staging URL，再填真 provider secrets。</td>
+          </tr>
+          <tr>
+            <td>未做嘅大類</td>
+            <td>網址、hosting、auth gateway、Postgres/Supabase、Stripe test、Turnstile、Upstash、PII/KMS、Sentry/logging、legal publication。</td>
+          </tr>
+          <tr>
+            <td>Website 內容/UI ready?</td>
+            <td>已補 how-it-works、FAQ、付款/交付流程、package selection、legal summary、refund/support/privacy/deletion copy。仍要真 Stripe/auth/domain 先可開正式 checkout。</td>
+          </tr>
+          <tr>
+            <td>AI 占星資料夠唔夠？</td>
+            <td>本地 CLI 已新增 <code>evidence</code>、<code>vedic</code>、<code>relationship</code> evidence pack；AI 可以讀計算證據包做西洋、印度同合盤分析。更深 Vedic Kuta/ashtakavarga/yoga、solar return、secondary progression、solar arc 留待下一階段驗證。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Domain Check</h2>
+      <table>
+        <thead><tr><th>Name</th><th>Checked domains</th><th>Current signal</th><th>Recommendation</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>astrocfu</code></td>
+            <td><code>.com</code>, <code>.app</code>, <code>.co</code>, <code>.io</code>, <code>.ai</code></td>
+            <td>All returned RDAP 404 / possible available on 2026-05-28; exact web search found no obvious same-name brand.</td>
+            <td>Good Cantonese pun candidate, but less immediately readable to non-HK users.</td>
+          </tr>
+          <tr>
+            <td><code>astrosifu</code></td>
+            <td><code>.com</code>, <code>.app</code>, <code>.co</code>, <code>.io</code>, <code>.ai</code></td>
+            <td>All returned RDAP 404 / possible available on 2026-05-28; exact web search found no obvious same-name brand.</td>
+            <td>Clearer than <code>astrocfu</code>; stronger if the product should instantly read as astrology + 師傅.</td>
+          </tr>
+          <tr>
+            <td><code>orbsifu</code></td>
+            <td><code>.com</code> previously checked</td>
+            <td>RDAP 404 / possible available in prior check.</td>
+            <td>Still the most distinctive option; <code>astrosifu</code> is the clearer SEO/name option.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Website Content / UIUX Audit</h2>
+      <table>
+        <thead><tr><th>Area</th><th>Current state</th><th>Public beta gap</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Homepage/storefront</td>
+            <td>Working teaser page now has hero, proof strip, how-it-works, birth-data form, location helper, preview result panel, pricing, payment/delivery flow, FAQ, legal summary, and footer.</td>
+            <td>Needs final brand/domain replacement after purchase plus live mobile/desktop visual QA on staging.</td>
+          </tr>
+          <tr>
+            <td>Payment</td>
+            <td>Server-side pricing catalog, protected Stripe Checkout flow, webhook audit, smoke scripts, and public package selection UI exist.</td>
+            <td>Real checkout remains blocked by auth gateway, Stripe test credentials, webhook secret, and staging smoke verification.</td>
+          </tr>
+          <tr>
+            <td>Q&A / FAQ</td>
+            <td>Public FAQ now covers teaser vs full report, delivery, accuracy limits, privacy, refunds, and follow-up questions.</td>
+            <td>Needs final support contact and real payment receipt copy after domain/provider setup.</td>
+          </tr>
+          <tr>
+            <td>T&C / legal</td>
+            <td>Privacy, Terms, and Data Deletion drafts now include refund/support, email-capture, subscription cancellation, and deletion-request handling notes.</td>
+            <td>Still needs human/legal review and <code>ASTROLOGY_LEGAL_PAGES_PUBLISHED=1</code> only after public deployment proof.</td>
+          </tr>
+          <tr>
+            <td>UI/accessibility</td>
+            <td>Labels, focus states, reduced-motion behavior, buyer copy, public navigation, and static/smoke tests were improved.</td>
+            <td>Needs browser screenshot QA on the real staging URL once domain/hosting are configured.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Public URL / Name</h2>
+      <table>
+        <thead><tr><th>Decision</th><th>Current recommendation</th><th>Proof / boundary</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Brand candidate</td>
+            <td><code>OrbSifu</code></td>
+            <td>Best current balance of astrology meaning, Hong Kong practitioner tone, and exact-search cleanliness.</td>
+          </tr>
+          <tr>
+            <td>Primary domain</td>
+            <td><code>orbsifu.com</code></td>
+            <td>Local RDAP pass returned 404/possible available on 2026-05-28; final proof still requires registrar checkout and trademark search.</td>
+          </tr>
+          <tr>
+            <td>Low-cost stack</td>
+            <td>Cloudflare Registrar/DNS/Turnstile, Render Starter Web Service, Upstash Redis REST, Stripe test mode, Sentry or verified log drain, Supabase/Postgres for managed DB proof.</td>
+            <td><code>docs/public_beta_provider_plan.md</code> records the exact handoff and <code>render.yaml</code> gives a secret-safe first staging blueprint.</td>
+          </tr>
+          <tr>
+            <td>Storage boundary</td>
+            <td>Render persistent SQLite is acceptable only for hidden staging smoke.</td>
+            <td>True public beta with real public user data still needs runtime Postgres persistence or another verified public storage decision.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Current Metrics</h2>
+      <div class="grid four">
+        <div class="metric"><strong>109</strong><span>pytest tests passed</span></div>
+        <div class="metric"><strong>0</strong><span>skipped tests in latest run</span></div>
+        <div class="metric"><strong>1</strong><span>upstream kerykeion deprecation warning</span></div>
+        <div class="metric"><strong>15</strong><span>public-beta readiness blockers without env setup</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Completion Estimate</h2>
+      <table>
+        <thead><tr><th>Target</th><th>Estimated completion</th><th>Basis</th><th>Remaining gap</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Local MVP / internal demo</td>
+            <td class="ok">90-93%</td>
+            <td>Core API, local persistence, paid-report credit flow, mock Stripe/OpenRouter, server-owned OpenRouter routing, saved profiles, dashboard readiness/remediation/verification/env-audit/env-bootstrap/blocker-handoff controls plus protected env-template loading, public teaser storefront with server-side package catalog rendering, public-safe runtime config, static birthplace presets, mock-first/live opt-in birthplace search, hash-only optional/required email capture with explicit consent/version metadata plus retention pruning, PII-safe public preview event telemetry plus retention pruning, dry-run/apply local SQLite and managed Postgres/Supabase retention maintenance for hash-only/derived operational tables, narrow robots/sitemap publication controls, public header smoke validation, layered public shared-report reader with Markdown, calendar, CSV evidence, and print/PDF-save exports, ASGI adapter, migrations, legal routes, placeholder-aware readiness checks, abuse review/cooldown, logout/delete revocation, trusted-auth export/delete smoke, Stripe checkout and webhook replay smoke tooling, public-controls smoke tooling, public storefront smoke tooling, optional Upstash-backed rate limiting, redacted local error logging, low-cost provider plan, and Render staging blueprint are built and tested.</td>
+            <td>Polish, real provider verification, and production-like deployment rehearsal.</td>
+          </tr>
+          <tr>
+            <td>Public beta</td>
+            <td class="warn">55-60%</td>
+            <td>Application backbone is present, including trusted gateway email capture/disposable-domain enforcement, public teaser hash-only email capture with consent metadata, public static birthplace presets plus mock-first/live opt-in location search, API/dashboard access to the placeholder-only public-beta env scaffold, value-free env audit, blocker handoff, a concrete public URL/provider plan, and a Render staging blueprint. Blank public-beta preflight still reports 15 blockers. The placeholder env template audit reports 30 configured keys, 13 placeholder keys, 0 missing keys, 0 unsafe defaults, and 12 readiness blockers without falsely passing copied <code>&lt;...&gt;</code> values or printing secrets; the blocker handoff reports <code>local_blocker=0</code> for the template path.</td>
+            <td>Register public domain, set canonical public/staging origin, deploy and run the upstream auth gateway smoke with real staging secrets, decide/complete runtime Postgres persistence before real public user data, managed DB migration apply, Stripe test credentials, PII key management, external rate limits, human challenge, legal publication marker, safe logging, and abuse review/cooldown config.</td>
+          </tr>
+          <tr>
+            <td>Production SaaS</td>
+            <td class="blocker">35-40%</td>
+            <td>The MVP architecture is solid, but production operations, provider ownership, billing/live model verification, observability, and security hardening are not finished.</td>
+            <td>Provider-backed auth/session lifecycle, KMS/Vault, Redis/edge controls, payment replay/audit tooling, incident/retention process, and real deployment rollback path.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Automation Mode</h2>
+      <table>
+        <thead><tr><th>Rule</th><th>Current execution policy</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Session default</td>
+            <td>Move directly from latest baseline into the highest-value unblocked roadmap item unless the user asks for discussion only.</td>
+            <td class="ok">Enabled</td>
+          </tr>
+          <tr>
+            <td>Batch size</td>
+            <td>Target 2-4 related deliverables in one context: implementation, API/persistence contract, tests, and docs/dashboard update.</td>
+            <td class="ok">Enabled</td>
+          </tr>
+          <tr>
+            <td>Blocker handling</td>
+            <td>Record production credentials, provider decisions, network, or sandbox socket limits, then continue with mock/local alternatives.</td>
+            <td class="ok">Enabled</td>
+          </tr>
+          <tr>
+            <td>Validation</td>
+            <td>Run focused tests during changes and broad validation before close when feasible.</td>
+            <td class="ok">Enabled</td>
+          </tr>
+          <tr>
+            <td>Stop gate</td>
+            <td>Pause automation when <code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code> reports <code>blocker = 0</code>. After that, only update status docs/dashboard and wait for explicit approval before more implementation.</td>
+            <td class="warn">Armed, not reached</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Verified Capabilities</h2>
+      <table>
+        <thead><tr><th>Area</th><th>Current capability</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Astrology core</td>
+            <td>Deterministic Swiss Ephemeris chart snapshot, data sufficiency, transit-window report preview.</td>
+            <td class="ok">Working locally</td>
+          </tr>
+          <tr>
+            <td>Paid report flow</td>
+            <td>Server-side credit costs, local credit ledger, full-report generation, model-run logging, saved reports.</td>
+            <td class="ok">Covered by tests</td>
+          </tr>
+          <tr>
+            <td>Billing</td>
+            <td>Protected mock-first checkout session endpoint, raw-body Stripe webhook signature verification, idempotent checkout credit grant helper, subscription-compatible monthly recurring price data, protected processed-webhook audit summaries with hash-only user references, <code>scripts/smoke_stripe_checkout.py</code> for credentialed test-mode session creation, and <code>scripts/smoke_stripe_webhook.py</code> for signed local/staging webhook replay.</td>
+            <td class="ok">Mock and audit paths working</td>
+          </tr>
+          <tr>
+            <td>OpenRouter routing</td>
+            <td><code>astrology_saas.model_routing</code> owns task routes for <code>report_writer</code> and <code>agent_followup</code>. Paid report and agent calls pass server-selected model, max-token, and rate assumptions into the OpenRouter client, store <code>model_route</code> for audit, and expose a secret-free protected view at <code>/api/admin/llm/model-routing</code> plus the local dashboard.</td>
+            <td class="ok">Covered by unit, service, HTTP, and dashboard tests</td>
+          </tr>
+          <tr>
+            <td>Auth bridge</td>
+            <td>API-key protected admin/dev routes plus signed local user session tokens for owner-scoped APIs; logout/account deletion revoke the current token through hash-only markers.</td>
+            <td class="warn">Local bridge only</td>
+          </tr>
+          <tr>
+            <td>Production auth adapter</td>
+            <td><code>ASTROLOGY_AUTH_PROVIDER=trusted_header</code> lets a verified upstream auth gateway inject <code>X-Astrology-User-Id</code> or <code>X-Authenticated-User-Id</code> plus <code>X-Auth-Gateway-Secret</code>; protected owner-scoped endpoints reject missing/invalid gateway headers and user-id mismatches. Optional <code>X-Authenticated-Email</code> / <code>X-Astrology-User-Email</code> is normalized, checked against disposable domains, and stored only as <code>email_hash</code>. <code>scripts/smoke_trusted_auth.py</code> now checks saved profile creation, account export, optional forwarded email, and optional disposable-user deletion through that path.</td>
+            <td class="ok">Covered by unit, HTTP, and smoke-script tests</td>
+          </tr>
+          <tr>
+            <td>Abuse controls</td>
+            <td>Fixed-window IP limit for all requests, hashed user-level limits after protected endpoint session resolution, opt-in abuse-event cooldown returning <code>429 abuse_cooldown</code>, optional Upstash Redis REST-backed counters with hash-only keys, and optional Turnstile/hCaptcha guard for public snapshot/preview generation.</td>
+            <td class="warn">Configured external backend needed</td>
+          </tr>
+          <tr>
+            <td>Operator security review</td>
+            <td>Protected <code>/api/admin/security/abuse-summary</code> groups recent security events by type, user, and IP hash with threshold-based escalation hints; <code>/api/admin/security/abuse-events/prune</code> applies explicit retention cleanup; cooldown env values now make repeated user/IP security events temporarily blockable.</td>
+            <td class="ok">Covered by tests and smoke</td>
+          </tr>
+          <tr>
+            <td>Privacy</td>
+            <td>Saved birth profiles require active consent versions, local sealed PII storage, redacted chart snapshots, account export, account purge.</td>
+            <td class="warn">Needs production KMS/auth</td>
+          </tr>
+          <tr>
+            <td>Public teaser storefront</td>
+            <td><code>/storefront</code> and <code>/preview</code> serve a dependency-free public birth-data/question form that calls <code>/api/report/preview</code>, renders teaser timing windows and evidence, loads <code>/api/storefront/catalog</code> for server-side package positioning with currency switching, loads <code>/api/storefront/config</code> for email/challenge/consent/location metadata plus teaser limits, loads <code>/api/storefront/location-presets</code> for common birthplace launch presets, calls <code>/api/storefront/location-search</code> for mock-first/live opt-in birthplace candidate search, calls <code>/api/storefront/timezone-offset</code> to calculate the selected preset's UTC offset from local birth date/time, links legal pages, and avoids protected API keys, signed user tokens, checkout session creation, dev credit grants, paid full-report calls, geocoder tokens, deterministic local challenge-token placeholders, and browser storage. <code>scripts/smoke_storefront_public.py</code> validates the public page, package catalog, runtime config, location search, timezone offset, and preview endpoint against local/staging.</td>
+            <td class="ok">Static, ASGI, and smoke-script tested</td>
+          </tr>
+          <tr>
+            <td>Preview email gate</td>
+            <td>Public chart snapshot/report preview can require <code>account_email</code> with <code>ASTROLOGY_PREVIEW_EMAIL_REQUIRED=1</code>. Accepted emails require <code>email_capture_consent=true</code> by default through <code>ASTROLOGY_PREVIEW_EMAIL_CONSENT_REQUIRED=1</code> and are stored only as <code>preview_email_captures.email_hash</code>/<code>email_domain_hash</code> plus consent metadata; invalid, disposable, or unconsented captures return <code>400</code>. The storefront sends optional email consent/version without browser storage, protected <code>/api/admin/preview-email-captures</code> plus the dashboard show recent captures/source aggregates, and protected <code>/api/admin/preview-email-captures/prune</code> applies retention cleanup without raw email/domain values.</td>
+            <td class="ok">Covered by unit, HTTP, and dashboard static tests</td>
+          </tr>
+          <tr>
+            <td>Preview telemetry</td>
+            <td>Successful public chart snapshot/report preview requests now write PII-safe <code>public_preview_events</code> rows with path, hashed IP, topic bucket, date-span/window/evidence counts, email-capture flag, challenge-required flag, and timestamp only. Protected <code>/api/admin/preview-events</code> plus the dashboard expose recent events and path/topic aggregates, while protected <code>/api/admin/preview-events/prune</code> plus the dashboard delete old derived telemetry by retention window, without birth data, raw questions, locations, raw emails/domains, owner IDs, challenge tokens, checkout IDs, or provider secrets.</td>
+            <td class="ok">Covered by unit, HTTP, dashboard, and migration-list tests</td>
+          </tr>
+          <tr>
+            <td>Sharing</td>
+            <td>Public-safe report retrieval by random share token with reduced payload, owner revoke/restore, expiry enforcement, a script-free <code>/reports/share/:share_token</code> HTML reader with restrictive CSP, noindex/no-referrer headers/meta, and conclusion/evidence/technical-detail/caveat layers, plus <code>?format=markdown</code>, <code>?format=ics</code>, <code>?format=csv</code>, <code>?format=print</code>, and <code>?format=pdf</code> exports/views using the same reduced payload and no owner/profile/context-pack fields. Export, print, and not-found responses also send noindex/no-referrer controls; CSV evidence rows guard spreadsheet formula prefixes and use non-token filenames.</td>
+            <td class="ok">Working locally</td>
+          </tr>
+          <tr>
+            <td>Dashboard data</td>
+            <td>Protected report history endpoint returns lightweight owner-scoped rows with summaries, confidence, share settings, and model/mock metadata.</td>
+            <td class="ok">Covered by tests</td>
+          </tr>
+          <tr>
+            <td>Dashboard UI</td>
+            <td>Dependency-free <code>/dashboard</code> page loads birth profiles, reports, packages, checkout sessions, Stripe webhook audit summaries, hash-only preview email captures, PII-safe public preview events, security events, deployment readiness, and the protected public-beta env template; it can prune old preview lead captures and public preview events by retention window, save/detail birth profiles, seed dev credits, create mock checkout sessions, generate paid reports from saved profile IDs, revoke/restore share links, ask report-context follow-ups, export data, revoke the current local session, request local account deletion, and inspect readiness remediation plus ordered verification commands without browser storage of local credentials.</td>
+            <td class="ok">Static contract tested</td>
+          </tr>
+          <tr>
+            <td>ASGI adapter</td>
+            <td><code>astrology_saas.asgi:app</code> wraps the existing stdlib API handler in-process, preserving current routes, auth/session checks, rate limiting, local persistence, and mock-first provider behavior for ASGI-compatible deployment/testing.</td>
+            <td class="ok">Covered by tests</td>
+          </tr>
+          <tr>
+            <td>DB migrations</td>
+            <td><code>astrology_saas.migrations</code> plus <code>scripts/run_migrations.py</code> can list, dry-run, status-check, and apply SQL migrations to Postgres/Supabase through <code>psql</code>, with <code>schema_migrations</code> checksum tracking.</td>
+            <td class="ok">Dry-run and fake-psql tests passed</td>
+          </tr>
+          <tr>
+            <td>Deployment readiness</td>
+            <td><code>astrology_saas.deployment_readiness</code>, protected <code>/api/deployment/readiness</code>, protected <code>/api/deployment/env-template</code>, protected <code>/api/deployment/env-audit</code>, protected <code>/api/deployment/env-bootstrap</code>, <code>scripts/check_deployment_readiness.py</code>, and the local dashboard readiness panel report pass/warning/blocker checks across canonical public base URL, auth, DB, migrations, PII key management, Stripe, OpenRouter, challenge, rate limiting, legal publication, and safe logging. <code>include_remediation=1</code>, <code>--remediation</code>, <code>--verification-plan</code>, <code>--env-template</code>, <code>--env-audit</code>, <code>--env-bootstrap</code>, <code>--env-file</code>, and <code>.env.public_beta.example</code> now provide placeholder-safe action plans, a secret-safe fill-order plan, the public-beta dotenv scaffold, and ordered smoke/migration runbooks for public-beta setup; the public-control step calls <code>scripts/smoke_public_controls.py</code>, the storefront step calls <code>scripts/smoke_storefront_public.py</code>, the public-header step calls <code>scripts/smoke_public_headers.py</code>, and all smoke commands use <code>ASTROLOGY_API_BASE_URL</code>.</td>
+            <td class="ok">Secret-safe contract tested</td>
+          </tr>
+          <tr>
+            <td>Observability</td>
+            <td><code>astrology_saas.observability</code> emits dependency-free structured error logs with recursive redaction for birth/profile fields, prompts/questions, emails, tokens, Stripe/OpenRouter secrets, signatures, and raw payloads; unexpected HTTP POST failures return a generic 500 body.</td>
+            <td class="ok">Covered by tests</td>
+          </tr>
+          <tr>
+            <td>Legal artifacts</td>
+            <td>Policy manifest plus generated public HTML pages at <code>/legal</code>, <code>/legal/privacy</code>, <code>/legal/terms</code>, and <code>/legal/data-deletion</code>; dashboard links to the local legal index/pages.</td>
+            <td class="ok">Local routes working</td>
+          </tr>
+          <tr>
+            <td>Public publication</td>
+            <td><code>/robots.txt</code> allows storefront/legal routes while disallowing <code>/api/</code>, <code>/dashboard</code>, and <code>/reports/share/</code>. <code>/sitemap.xml</code> lists only <code>/storefront</code>, <code>/preview</code>, and <code>/legal/*</code>, so tokenized shared-report URLs stay out of crawler discovery. <code>scripts/smoke_public_headers.py</code> now verifies storefront/preview/legal CSP/referrer/nosniff/no-store headers, robots/sitemap exclusions, and shared-report unavailable-link noindex/no-referrer headers.</td>
+            <td class="ok">Covered by static and ASGI tests</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid two">
+      <article class="risk">
+        <h3>Risks / Blockers</h3>
+        <p><span class="ok">Public URL/name narrowed:</span> <code>OrbSifu</code> is the current first-choice name, with <code>orbsifu.com</code> showing RDAP 404/possible availability in the local check. This is not a legal or registrar guarantee; it must be bought and trademark-checked before launch copy treats it as final.</p>
+        <p><span class="warn">Render staging blueprint is not a public data boundary:</span> <code>render.yaml</code> can run the current API cheaply with a persistent SQLite disk for hidden staging smoke, but real public user data still needs runtime Postgres persistence or another verified managed storage decision.</p>
+        <p><span class="blocker">Production auth gateway not wired:</span> the trusted-header adapter, optional trusted email capture, disposable-email guard, and disposable-user smoke script are implemented and tested, but public beta still needs an upstream provider/gateway to verify users, strip spoofed headers, inject trusted identity headers, and own account lifecycle controls.</p>
+        <p><span class="warn">Production PII encryption not selected:</span> local sealed storage is not a substitute for KMS-backed encryption and audited key rotation.</p>
+        <p><span class="warn">Rate limiting backend must be configured:</span> local default is still in-memory, but <code>ASTROLOGY_RATE_LIMIT_BACKEND=upstash</code> now supports Upstash Redis REST counters; public beta still needs real Upstash/edge credentials plus managed abuse-event persistence.</p>
+        <p><span class="warn">Abuse workflow needs production wiring:</span> local summary/prune/cooldown endpoints and Postgres retention dry-run/apply SQL now exist; alert delivery, scheduled apply ownership, managed persistence, and admin escalation workflow still need deployment configuration.</p>
+        <p><span class="warn">Logging needs production sink:</span> local structured error logs are redacted and generic 500 responses are covered by tests; public beta still needs managed sink, retention/access controls, and <code>ASTROLOGY_ERROR_LOGGING_CONFIGURED=1</code>.</p>
+        <p><span class="warn">Stripe credential verification pending:</span> mock checkout/webhook paths, subscription payload shape, and secret-safe webhook audit summaries are tested; real Stripe test-mode calls still need credentials, <code>STRIPE_API_ENABLED=1</code>, and a matching <code>STRIPE_WEBHOOK_SECRET</code>. Use <code>scripts/smoke_stripe_checkout.py</code> and <code>scripts/smoke_stripe_webhook.py</code> once staging secrets are available.</p>
+        <p><span class="warn">OpenRouter live route choices pending:</span> route ownership is implemented and tested, but public beta still needs final model names, route token caps/rates, <code>OPENROUTER_API_KEY</code>, and spend cap review before <code>OPENROUTER_LIVE=1</code>.</p>
+        <p><span class="warn">Credentialed DB migration and retention dry-run pending:</span> migration and Postgres retention SQL runners are tested; applying migrations and running credentialed retention dry-run need <code>ASTROLOGY_DATABASE_URL</code> for a disposable Postgres/Supabase test DB.</p>
+        <p><span class="warn">Public-beta readiness has 15 expected blockers in blank env:</span> canonical public base URL, auth, database, migrations, PII key management, Stripe, challenge, Upstash/edge limits, abuse review/cooldown env values, teaser env tuning, legal publication marker, and production logging config still need production choices/config. The placeholder env template reports 12 blockers because explicit non-secret launch defaults pass, including abuse cooldown defaults, while copied <code>&lt;...&gt;</code> values remain blockers. The new blocker handoff reports <code>operator_handoff=15</code> and <code>local_blocker=0</code> for blank env, and <code>operator_handoff=12</code>/<code>local_blocker=0</code> for the placeholder template, so remaining known blockers are operator/provider work rather than hidden local implementation gaps.</p>
+        <p><span class="warn">Preview email policy needs launch choice:</span> the hash-only gate is implemented and can be forced with <code>ASTROLOGY_PREVIEW_EMAIL_REQUIRED=1</code>, but public beta still needs a product decision on mandatory email versus optional teaser capture.</p>
+        <p><span class="warn">Geocoder/timezone provider still needs staging proof:</span> static birthplace presets, mock-first location search, optional server-side Mapbox lookup, and local IANA <code>zoneinfo</code> offset calculation now reduce manual storefront entry and fixed-offset DST mistakes. <code>scripts/smoke_location_timezones.py</code> verifies static/live-fallback search plus Hong Kong/London DST cases, but production still needs provider-grade handling for ambiguous historical local times.</p>
+        <p><span class="ok">Legal publication route built locally:</span> generated pages now serve from the same source markdown as the consent manifest; legal review/deployment marker remains external.</p>
+        <p><span class="ok">Local smoke paths verified:</span> <code>scripts/smoke_api.py</code> covers the local signed-token path, <code>scripts/smoke_trusted_auth.py</code> covers the trusted-header staging path, <code>scripts/smoke_stripe_checkout.py --allow-mock</code> covers Stripe Checkout request generation locally, <code>scripts/smoke_stripe_webhook.py</code> blocks clearly without a webhook secret, <code>scripts/smoke_public_controls.py</code> is tested for both guard-pass and disabled-challenge failure cases, <code>scripts/smoke_storefront_public.py</code> checks public teaser robots/sitemap/catalog/config/location/timezone/preview flow, <code>scripts/smoke_public_headers.py</code> checks public page/crawler/header behavior, and <code>scripts/smoke_location_timezones.py</code> checks launch location/timezone edge cases.</p>
+      </article>
+      <article class="risk">
+        <h3>Next Highest-Value Work</h3>
+        <p>1. Register <code>astrosifu.com</code> if you want the clearest public name, or <code>orbsifu.com</code> if you want the most distinctive brand, then connect Cloudflare DNS to the first Render staging service created from <code>render.yaml</code>.</p>
+        <p>2. Set the resulting HTTPS origin as <code>ASTROLOGY_PUBLIC_BASE_URL</code> and keep all secrets in the provider secret manager, not in the blueprint.</p>
+        <p>3. Create the first real staging/public-beta env file from <code>.env.public_beta.example</code> or <code>python3 scripts/check_deployment_readiness.py --env-template</code>, then run <code>python3 scripts/check_deployment_readiness.py --env-file &lt;path&gt; --target-env public_beta --env-bootstrap</code> to get the secret-safe fill order by key, owner, external resource, and blocker status.</p>
+        <p>4. Fill operator API key, auth gateway secret, Postgres/Supabase URL, PII key settings, Stripe test secrets, human-challenge secret, Upstash/edge rate-limit settings, teaser limits, legal publication marker, and logging marker.</p>
+        <p>5. Run <code>python3 scripts/check_deployment_readiness.py --env-file &lt;path&gt; --target-env public_beta --env-audit</code>, <code>python3 scripts/check_deployment_readiness.py --env-file &lt;path&gt; --target-env public_beta --blocker-handoff</code>, and <code>python3 scripts/check_deployment_readiness.py --env-file &lt;path&gt; --target-env public_beta --verification-plan</code>; follow the generated command order until blocker count drops to zero.</p>
+        <p>6. Provision a disposable Postgres/Supabase staging database and run <code>python3 scripts/run_migrations.py --dry-run</code> then <code>python3 scripts/run_migrations.py --apply</code> once <code>ASTROLOGY_DATABASE_URL</code> is available.</p>
+        <p>7. Put the API behind a verified auth gateway using <code>ASTROLOGY_AUTH_PROVIDER=trusted_header</code>, then run <code>scripts/smoke_trusted_auth.py</code> with a disposable staging user, real gateway secret, and optional <code>ASTROLOGY_SMOKE_USER_EMAIL</code>.</p>
+        <p>8. Run <code>python3 scripts/run_postgres_retention_maintenance.py --sql</code>, then run a credentialed dry-run with <code>ASTROLOGY_DATABASE_URL=&lt;postgres-or-supabase-connection-url&gt; python3 scripts/run_postgres_retention_maintenance.py --json</code>; only schedule <code>--apply --json</code> after counts and ownership are reviewed.</p>
+        <p>9. Decide whether the dependency-free ASGI adapter is enough for first deployment, or add FastAPI after dependency policy is confirmed.</p>
+        <p>10. Verify Stripe Checkout with <code>STRIPE_API_ENABLED=1 STRIPE_SECRET_KEY=sk_test_... python3 scripts/smoke_stripe_checkout.py</code>, then replay a signed webhook with <code>STRIPE_WEBHOOK_SECRET=whsec_... python3 scripts/smoke_stripe_webhook.py</code>.</p>
+        <p>11. Run <code>scripts/smoke_public_controls.py</code>, <code>scripts/smoke_storefront_public.py</code>, <code>scripts/smoke_public_headers.py</code>, and <code>scripts/smoke_location_timezones.py</code> against the staging origin after deployment settings are in place.</p>
+        <p>12. Decide whether free public previews require <code>ASTROLOGY_PREVIEW_EMAIL_REQUIRED=1</code> before public beta, and choose the production CRM/signup raw-email flow; the local audit records consent metadata but remains hash-only and cannot be used for outbound email.</p>
+        <p>13. Review and set OpenRouter route model names, token caps, and route-level cost rates before enabling <code>OPENROUTER_LIVE=1</code>.</p>
+        <p>14. Configure production-safe logging sink/retention/access controls, then set <code>ASTROLOGY_ERROR_LOGGING_CONFIGURED=1</code>.</p>
+        <p>15. Review the generated <code>/legal/*</code> pages, deploy them publicly, then set <code>ASTROLOGY_LEGAL_PAGES_PUBLISHED=1</code>.</p>
+      </article>
+    </section>
+
+    <section>
+      <h2>Command Results</h2>
+      <table>
+        <thead><tr><th>Command</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>date '+%Y-%m-%d %H:%M %Z'</code></td><td class="ok">2026-05-28 22:11 BST</td></tr>
+          <tr><td><code>RDAP astrocfu/astrosifu domain check</code></td><td class="ok"><code>astrocfu</code> and <code>astrosifu</code> returned 404 / possible available for <code>.com</code>, <code>.app</code>, <code>.co</code>, <code>.io</code>, and <code>.ai</code>; final proof requires registrar checkout</td></tr>
+          <tr><td><code>web/storefront.html + legal/pricing audit</code></td><td class="ok">public how-it-works, package selection, payment/delivery flow copy, FAQ/Q&amp;A, legal summary, focus states, public-safe navigation, refund/support terms, privacy email-capture wording, and deletion-policy wording are now drafted and covered by static tests; live checkout still waits for real Stripe/auth/domain setup</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_saas_services.py::test_storefront_pricing_catalog_is_public_safe_and_grouped tests/test_saas_services.py::test_legal_policy_html_pages_are_generated_from_source_documents tests/test_asgi_adapter.py::test_asgi_adapter_serves_public_contracts -q</code></td><td class="ok">6 passed in 0.22s</td></tr>
+          <tr><td><code>storefront JavaScript syntax check</code></td><td class="ok"><code>storefront_js_syntax_ok</code></td></tr>
+          <tr><td><code>python3 scripts/smoke_storefront_public.py</code></td><td class="ok">passed against a local public server: storefront, robots, sitemap, catalog, config, location preset/search/timezone, and preview flow checked</td></tr>
+          <tr><td><code>python3 scripts/smoke_public_headers.py</code></td><td class="ok">passed against the same local public server with expected public headers and crawler controls</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_dashboard_static.py -q</code></td><td class="ok">5 passed in 0.02s</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">fresh status check still reports 3 passes, 1 warning, 15 blockers; public-beta stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --blocker-handoff</code></td><td class="warn">fresh handoff still reports <code>operator_handoff=15</code> and <code>local_blocker=0</code>; remaining known work is external/provider/operator setup</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_deployment_blueprint.py -q</code></td><td class="ok">2 passed; Render blueprint and provider plan are covered for secret-safety and deployment-boundary wording</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after the storefront UIUX/content polish and dashboard refresh</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">109 passed, 1 upstream kerykeion deprecation warning in 9.16s</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">latest check still reports 3 passes, 1 warning, 15 blockers; public-beta stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --blocker-handoff</code></td><td class="warn">latest handoff still reports <code>operator_handoff=15</code> and <code>local_blocker=0</code>, so remaining known blockers are deployment/provider/operator actions</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --env-bootstrap</code></td><td class="warn">template bootstrap reports 30 configured keys, 13 placeholders, 0 missing, 0 unsafe defaults, and 12 readiness blockers</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --env-audit</code></td><td class="warn">latest template audit reports 30 configured keys, 13 placeholders, 0 missing, 0 unsafe defaults, and 12 readiness blockers</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --verification-plan</code></td><td class="warn">ordered smoke/migration plan remains pending on real public URL/auth/database/Stripe/challenge/rate-limit/legal/logging setup</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">passed with no diff</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after blocker-handoff core, CLI/API, dashboard, and test changes</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">107 passed, 1 upstream kerykeion deprecation warning in 9.20s after blocker-handoff changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env still reports 3 passes, 1 warning, 15 blockers, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --blocker-handoff</code></td><td class="warn">exit code 1 as expected; reports 15 blocker handoff items, <code>operator_handoff=15</code>, and <code>local_blocker=0</code> without raw secret values</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --blocker-handoff</code></td><td class="warn">exit code 1 as expected; placeholder template reports 12 operator/provider handoff blockers and <code>local_blocker=0</code></td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --env-bootstrap</code></td><td class="warn">printed a secret-safe fill-order plan with key kind, owner, blocker checks, external resources, and next env-audit/verification/json commands; no raw secret values are included</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --env-audit</code></td><td class="warn">exit code 1 as expected; 30 configured keys, 13 placeholders, 0 missing, 0 unsafe defaults, 12 readiness blockers</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --verification-plan</code></td><td class="warn">exit code 1 as expected; ordered runbook remains pending on public URL/auth/database/migrations/Stripe/challenge/rate-limit/legal/logging configuration</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">no diff after adding blocker-handoff verification note</td></tr>
+          <tr><td><code>node dashboard syntax check</code></td><td class="ok"><code>dashboard_js_syntax_ok 1</code></td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_public_beta_blocker_handoff_is_secret_safe_and_operator_actionable tests/test_security_and_integrations.py::test_deployment_readiness_cli_prints_blocker_handoff_without_values tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter tests/test_dashboard_static.py -q</code></td><td class="ok">5 passed, 1 upstream kerykeion deprecation warning for focused blocker-handoff/API/dashboard coverage</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_public_beta_env_bootstrap_plan_is_secret_safe_and_actionable tests/test_security_and_integrations.py::test_deployment_readiness_cli_prints_env_bootstrap_without_values tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter -q</code></td><td class="ok">3 passed, 1 upstream kerykeion deprecation warning after adding env-bootstrap core, CLI, and protected API coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after env-bootstrap module, API, CLI, and test changes</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M %Z'</code></td><td class="ok">2026-05-26 13:18 BST</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">103 passed, 1 upstream kerykeion deprecation warning in 12.06s</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env reports 3 passes, 1 warning, 15 blockers, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --env-template ... --env-audit</code></td><td class="warn">exit code 1 as expected; placeholder template audit reports 30 configured keys, 13 placeholder keys, 0 missing keys, 0 unsafe defaults, and 12 readiness blockers without printing secret values</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --remediation</code></td><td class="warn">secret-free remediation output lists the current blocker areas: canonical public URL, operator API key, dev-mode shutdown, session secret, trusted auth, database/migrations, PII key management, Stripe, human challenge, external rate limits, abuse workflow, preview teaser limits, legal publication, and safe logging</td></tr>
+          <tr><td><code>git status --short</code></td><td class="warn">not available at this path: current workspace is not a Git repository or parent worktree</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after the latest status-dashboard refresh</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">103 passed, 1 upstream kerykeion deprecation warning after adding secret-safe public-beta env audit core, CLI/API surfaces, dashboard wiring, tests, and docs</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after env-audit module, CLI, API, dashboard, and test changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 15 blockers and 1 warning; automation stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --env-audit</code></td><td class="warn">returned exit code 1 as expected; placeholder template audit reports 30 configured keys, 13 placeholder keys, 0 missing keys, 0 unsafe defaults, and 12 readiness blockers without printing values</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">101 passed, 1 upstream kerykeion deprecation warning after adding Postgres/Supabase retention maintenance SQL runner, CLI, tests, docs, and verification-plan wiring</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after Postgres retention module/script/test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_migration_runner.py tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free tests/test_security_and_integrations.py::test_deployment_readiness_remediation_and_env_template_are_secret_free -q</code></td><td class="ok">11 passed for Postgres retention SQL runner and public-beta verification-plan/env-template wiring</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">no diff after adding Postgres retention maintenance verification commands</td></tr>
+          <tr><td><code>python3 scripts/run_postgres_retention_maintenance.py --sql</code></td><td class="ok">rendered dry-run Postgres retention SQL for hash-only/derived operational tables without requiring credentials</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env reports 15 blockers and 1 warning, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; placeholder public-beta template reports 12 blockers and 1 warning because <code>&lt;...&gt;</code> values are treated as missing</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --verification-plan | rg -n "postgres_retention_maintenance|run_postgres_retention"</code></td><td class="ok">confirmed the new Postgres retention verification step and commands are present, pending database URL plus abuse workflow configuration</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">97 passed, 1 upstream kerykeion deprecation warning after adding local retention maintenance dry-run/apply coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after retention maintenance helper/script/test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_retention_maintenance_dry_run_apply_and_cli_are_secret_safe tests/test_security_and_integrations.py::test_deployment_readiness_remediation_and_env_template_are_secret_free -q</code></td><td class="ok">2 passed for focused retention maintenance and env-template coverage</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">no diff after adding preview lead/event retention defaults to the placeholder env scaffold</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env reports 15 blockers and 1 warning, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; placeholder public-beta template reports 12 blockers and 1 warning because <code>&lt;...&gt;</code> values are treated as missing</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env now reports 15 blockers and 1 warning, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">95 passed, 1 upstream kerykeion deprecation warning after adding public header smoke validation and stricter legal-page public headers</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after public header smoke/API/readiness/test changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">exit code 1 as expected; blank public-beta env still reports 14 blockers and 1 warning, so the automation stop gate was not reached</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_asgi_adapter.py::test_asgi_adapter_serves_public_contracts tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free tests/test_security_and_integrations.py::test_public_headers_smoke_script_checks_public_header_contract tests/test_storefront_static.py -q</code></td><td class="ok">6 passed after adding public header smoke and legal-page header assertions</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">94 passed, 1 upstream kerykeion deprecation warning after adding public robots.txt and sitemap.xml publication controls</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning for focused storefront/ASGI publication route coverage</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; automation stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">93 passed, 1 upstream kerykeion deprecation warning after adding PII-safe public preview event telemetry</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py tests/test_security_and_integrations.py::test_local_user_email_is_hashed_only tests/test_security_and_integrations.py::test_http_public_preview_email_gate_is_hash_only -q</code></td><td class="ok">4 passed, 1 upstream kerykeion deprecation warning for focused preview telemetry/API/dashboard coverage</td></tr>
+          <tr><td><code>python3 scripts/run_migrations.py --list</code></td><td class="ok">listed migrations 001-004, including <code>004_public_preview_events</code></td></tr>
+          <tr><td><code>ASTROLOGY_API_BASE_URL=http://127.0.0.1:8792 python3 scripts/smoke_storefront_public.py</code></td><td class="ok">storefront page, catalog, config, location search, timezone offset, and preview flow passed</td></tr>
+          <tr><td><code>ASTROLOGY_API_BASE_URL=http://127.0.0.1:8792 python3 scripts/smoke_location_timezones.py</code></td><td class="ok">Hong Kong fixed offset and London winter/summer DST edge cases passed</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; automation stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after project dashboard/doc checkpoint update</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after preview event telemetry API/dashboard/test changes</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(dashboard script) ... NODE</code></td><td class="ok">previous dashboard_js_syntax_ok 1</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_asgi_adapter.py::test_asgi_adapter_serves_public_contracts -q</code></td><td class="ok">1 passed after the preview lead retention prune slice</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py tests/test_storefront_static.py tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free -q</code></td><td class="ok">5 passed after dashboard/checklist/static docs update</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">93 passed, 1 upstream kerykeion deprecation warning after adding dedicated public location/timezone smoke coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after location/timezone smoke script, readiness plan, and test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free tests/test_security_and_integrations.py::test_location_timezone_smoke_script_checks_dst_edge_cases -q</code></td><td class="ok">2 passed for focused readiness-plan and Hong Kong/London DST smoke coverage</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --verification-plan</code></td><td class="warn">returned exit code 1 as expected; plan now includes ready <code>location_timezone_smoke</code> plus pending external-credential steps</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; automation stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">91 passed, 1 upstream kerykeion deprecation warning after adding mock-first/live opt-in public birthplace search and storefront wiring</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after location search service/API/storefront/test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py tests/test_security_and_integrations.py::test_public_location_search_can_use_live_mapbox_with_injected_client -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning for focused storefront/location-search public contracts</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">49 passed, 1 upstream kerykeion deprecation warning after static fallback and injected Mapbox client coverage</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(storefront script) ... NODE</code></td><td class="ok">storefront_js_syntax_ok</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">89 passed, 1 upstream kerykeion deprecation warning after adding public-safe shared-report print/PDF-save view</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py tests/test_asgi_adapter.py -q</code></td><td class="ok">9 passed, 1 upstream kerykeion deprecation warning after print renderer and ASGI route coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after print renderer/API route/test changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">88 passed, 1 upstream kerykeion deprecation warning after adding public-safe IANA timezone offset resolver and storefront auto-fill wiring</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after location preset/timezone resolver, API route, storefront, and test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py ... -q</code></td><td class="ok">8 passed, 1 upstream kerykeion deprecation warning for focused storefront/timezone contracts</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after location preset module, API route, storefront, and test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py tests/test_security_and_integrations.py::test_public_location_presets_are_static_public_safe_and_filterable -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning after focused birthplace preset coverage</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(storefront script) ... NODE</code></td><td class="ok">storefront_js_syntax_ok</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">85 passed, 1 upstream kerykeion deprecation warning after adding explicit consent gating/version metadata for public preview email capture</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after API, persistence, storefront, and test changes</td></tr>
+          <tr><td><code>python3 scripts/run_migrations.py --list</code></td><td class="ok">listed migrations 001, 002, and new 003_preview_email_capture_consent</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">no diff after adding ASTROLOGY_PREVIEW_EMAIL_CONSENT_REQUIRED=1 to the public-beta env scaffold</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected; placeholder template still has 11 blockers and 1 warning</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py tests/test_storefront_static.py -q</code></td><td class="ok">4 passed after roadmap/dashboard/static checkpoint updates</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(storefront script) ... NODE</code></td><td class="ok">storefront_js_syntax_ok</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">85 passed, 1 upstream kerykeion deprecation warning after adding public storefront runtime config/API/UI coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after storefront config module, API route, and test changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py tests/test_security_and_integrations.py::test_storefront_public_config_reflects_launch_flags_without_secrets -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning after focused storefront config coverage</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py tests/test_storefront_static.py -q</code></td><td class="ok">4 passed after dashboard/status and storefront static contract updates</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">84 passed, 1 upstream kerykeion deprecation warning after adding public storefront package catalog/API/UI coverage</td></tr>
+          <tr><td><code>python3 -m pytest -q tests/test_saas_services.py::test_storefront_pricing_catalog_is_public_safe_and_grouped tests/test_asgi_adapter.py::test_asgi_adapter_serves_public_contracts tests/test_storefront_static.py</code></td><td class="ok">4 passed after package catalog route and storefront static contract update</td></tr>
+          <tr><td><code>curl -fsS http://127.0.0.1:8788/api/storefront/catalog?currency=HKD</code></td><td class="ok">returned public package sections for one-off reports, follow-up credits, and subscriptions; no checkout URL or protected billing fields</td></tr>
+          <tr><td><code>curl -fsS http://127.0.0.1:8788/storefront</code></td><td class="ok">returned storefront HTML with pricing UI and <code>/api/storefront/catalog</code> fetch; port 8788 used because 8787 was already occupied</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">83 passed, 1 upstream kerykeion deprecation warning after adding protected env-template API/dashboard loader</td></tr>
+          <tr><td><code>python3 -m pytest -q tests/test_dashboard_static.py tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter</code></td><td class="ok">3 passed, 1 upstream kerykeion deprecation warning after env-template dashboard/API coverage</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">83 passed, 1 upstream kerykeion deprecation warning after adding noindex/no-referrer shared-report privacy controls</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py tests/test_asgi_adapter.py -q</code></td><td class="ok">8 passed, 1 upstream kerykeion deprecation warning after reader meta/header coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after shared-report response/helper and test updates</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">83 passed, 1 upstream kerykeion deprecation warning after adding protected hash-only preview email capture audit and dashboard wiring</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard preview-capture contract update</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">43 passed, 1 upstream kerykeion deprecation warning after preview capture API/storage coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after preview capture API/dashboard/test changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">83 passed, 1 upstream kerykeion deprecation warning after adding public-safe CSV evidence export for shared reports</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py tests/test_asgi_adapter.py -q</code></td><td class="ok">8 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after CSV renderer/API route changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">82 passed, 1 upstream kerykeion deprecation warning after adding the opt-in hash-only public preview email gate</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_migration_runner.py tests/test_storefront_static.py tests/test_security_and_integrations.py::test_local_user_email_is_hashed_only tests/test_security_and_integrations.py::test_http_public_preview_email_gate_is_hash_only -q</code></td><td class="ok">9 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/run_migrations.py --list</code></td><td class="ok">listed unchanged <code>001_initial_schema</code> checksum <code>4cf5c8b728255388ba43d267fe27f939cfa9f0f637e2c2afa52ece7dfa64620c</code> plus new <code>002_preview_email_captures</code> checksum <code>99f0c64fdf360e30617e2e9a214099f895dfdcc45098fe2c01415d348257d53a</code></td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">81 passed, 1 upstream kerykeion deprecation warning after adding public-safe calendar export for shared-report timing windows</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py tests/test_asgi_adapter.py -q</code></td><td class="ok">7 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after ICS renderer/API route changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">80 passed, 1 upstream kerykeion deprecation warning after adding public-safe Markdown export for shared reports</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py tests/test_asgi_adapter.py -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas</code></td><td class="ok">passed after Markdown renderer/API route changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">79 passed, 1 upstream kerykeion deprecation warning after adding layered public shared-report reader sections</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_report_reader.py -q</code></td><td class="ok">2 passed after reader layer/escaping coverage update</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after reader renderer changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>ASTROLOGY_DEV_MODE=1 python3 -m astrology_saas.api_server --port 8787</code></td><td class="ok">server was already running; <code>/health</code> and <code>/storefront</code> returned HTTP 200</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">79 passed, 1 upstream kerykeion deprecation warning after adding the public teaser storefront</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_storefront_static.py tests/test_asgi_adapter.py -q</code></td><td class="ok">5 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">77 passed, 1 upstream kerykeion deprecation warning after adding the public shared-report reader route</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">74 passed, 1 upstream kerykeion deprecation warning after adding public-controls smoke coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after adding <code>scripts/smoke_public_controls.py</code></td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --verification-plan</code></td><td class="warn">returned exit code 1 as expected; public-control step now calls <code>scripts/smoke_public_controls.py</code> and smoke scripts use <code>ASTROLOGY_API_BASE_URL</code></td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers and 1 warning; copied placeholders remain unconfigured</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">passed with no diff</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free tests/test_security_and_integrations.py::test_public_controls_smoke_script_checks_launch_guards tests/test_security_and_integrations.py::test_public_controls_smoke_script_fails_when_challenge_is_disabled -q</code></td><td class="ok">3 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/smoke_public_controls.py --help</code></td><td class="ok">printed CLI options for base URL, API key, target env, and optional guard skips</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">72 passed, 1 upstream kerykeion deprecation warning after trusted-auth gateway email capture/disposable-domain enforcement</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after trusted-auth email guard changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_trusted_auth_gateway_headers_require_shared_secret_and_user tests/test_security_and_integrations.py::test_http_protected_routes_accept_trusted_auth_gateway_headers tests/test_security_and_integrations.py::test_trusted_auth_smoke_script_exercises_account_export_delete -q</code></td><td class="ok">3 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers and 1 warning; copied placeholders remain unconfigured</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard/status update</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">72 passed, 1 upstream kerykeion deprecation warning after adding the secret-free public-beta verification plan</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after verification-plan code, CLI, API, dashboard, and tests</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(dashboard script) ... NODE</code></td><td class="ok">dashboard_js_syntax_ok</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --verification-plan</code></td><td class="warn">returned exit code 1 as expected; printed pending migration/auth/Stripe/webhook/abuse/legal/final-gate steps without secrets</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">passed with no diff after adding the verification-plan command to the public-beta template</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_deployment_readiness_verification_plan_is_ordered_and_secret_free tests/test_security_and_integrations.py::test_deployment_readiness_cli_prints_verification_plan_without_secrets tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter tests/test_dashboard_static.py -q</code></td><td class="ok">5 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">70 passed, 1 upstream kerykeion deprecation warning after adding server-owned OpenRouter routing</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_openrouter_model_routing_is_server_owned_and_env_overridable tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter tests/test_saas_services.py::test_full_report_generation_deducts_credits_and_saves_report tests/test_saas_services.py::test_agent_followup_uses_saved_report_and_deducts_credit tests/test_dashboard_static.py -q</code></td><td class="ok">6 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template | diff -u - .env.public_beta.example</code></td><td class="ok">passed with no diff after adding OpenRouter route env defaults to the public-beta template</td></tr>
+          <tr><td><code>python3 scripts/smoke_stripe_webhook.py --skip-audit</code></td><td class="warn">returned exit code 2 as expected because <code>STRIPE_WEBHOOK_SECRET</code> is not configured locally</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_checkout_session_request_and_webhook_credit_grant tests/test_security_and_integrations.py::test_stripe_webhook_smoke_script_blocks_without_secret tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter tests/test_dashboard_static.py -q</code></td><td class="ok">5 passed, 1 upstream kerykeion deprecation warning after webhook audit/replay coverage</td></tr>
+          <tr><td><code>python3 scripts/smoke_stripe_checkout.py --allow-mock --package-code starter_monthly --currency GBP</code></td><td class="ok">passed; returned mock subscription Checkout session with <code>checkout.stripe.com</code> host</td></tr>
+          <tr><td><code>python3 scripts/smoke_stripe_checkout.py</code></td><td class="warn">returned exit code 2 as expected because Stripe API mode and secret key are not configured locally</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers and 1 warning; copied placeholders remain unconfigured</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard/status update</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">34 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after adding <code>scripts/smoke_trusted_auth.py</code></td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_trusted_auth_smoke_script_exercises_account_export_delete -q</code></td><td class="ok">1 passed; script verified saved profile, export, account delete, and post-delete empty profile list through trusted headers</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">33 passed, 1 upstream kerykeion deprecation warning after trusted auth gateway adapter coverage</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after trusted auth gateway changes</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers and 1 warning; trusted auth gateway secret placeholder remains unconfigured</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; stop gate not reached</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">65 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard readiness/remediation panel contract update</td></tr>
+          <tr><td><code>node - &lt;&lt;'NODE' ... vm.Script(script) ... NODE</code></td><td class="ok">dashboard_js_syntax_ok 1</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after dashboard readiness panel update</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">63 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; dashboard readiness panel now surfaces these blockers</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after docs/dashboard status updates</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M %Z'</code></td><td class="ok">2026-05-21 01:25 BST</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after abuse cooldown changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">31 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard status update</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">63 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning in blank env; abuse workflow now requires cooldown env values; stop gate not reached</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers; abuse-review/cooldown defaults pass while provider placeholders remain unconfigured</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template</code></td><td class="ok">placeholder-only template includes <code>ASTROLOGY_ABUSE_COOLDOWN_*</code>, <code>ASTROLOGY_RATE_LIMIT_BACKEND=upstash</code>, and Upstash REST variables</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M %Z'</code></td><td class="ok">2026-05-21 00:25 BST</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after placeholder-aware readiness and env-file parser changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">28 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">60 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning in blank env</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-file .env.public_beta.example --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 11 blockers; copied <code>&lt;...&gt;</code> placeholders remain unconfigured</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_asgi_adapter.py -q</code></td><td class="ok">2 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_migration_runner.py -q</code></td><td class="ok">5 passed</td></tr>
+          <tr><td><code>python3 scripts/run_migrations.py --list</code></td><td class="ok">listed <code>001_initial_schema</code> with latest checksum <code>4cf5c8b728255388ba43d267fe27f939cfa9f0f637e2c2afa52ece7dfa64620c</code></td></tr>
+          <tr><td><code>python3 scripts/run_migrations.py --dry-run</code></td><td class="ok">emitted transaction-wrapped Postgres SQL with <code>schema_migrations</code> tracking</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">22 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 11 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 13 blockers and secret-safe output</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_saas_services.py::test_legal_policy_manifest_exposes_current_consent_version tests/test_saas_services.py::test_legal_policy_html_pages_are_generated_from_source_documents -q</code></td><td class="ok">2 passed</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_asgi_adapter.py::test_asgi_adapter_serves_public_contracts -q</code></td><td class="ok">1 passed</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 11 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 13 blockers and secret-safe output</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">54 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>ASTROLOGY_DEV_MODE=1 python3 -m astrology_saas.api_server --port 8787</code></td><td class="ok">local server started and stopped after smoke</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="ok">completed full local paid flow</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">23 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">55 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 12 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and secret-safe output</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="ok">completed full local paid flow including operator abuse summary</td></tr>
+          <tr><td><code>ASGI adapter update</code></td><td class="ok">added <code>astrology_saas.asgi:app</code> with public and protected contract tests</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 18:17:46 BST</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_local_session_token_revocation_is_hash_only_and_prunable tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter tests/test_dashboard_static.py -q</code></td><td class="ok">4 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py tests/test_dashboard_static.py tests/test_migration_runner.py -q</code></td><td class="ok">31 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">56 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after dashboard status update</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="ok">completed full local HTTP flow through account deletion and post-delete token revocation status 401</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 19:20:30 BST</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 19:22:56 BST</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 19:44:49 BST</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">56 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 12 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers, 1 warning, and secret-safe output</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_dashboard_static.py -q</code></td><td class="ok">2 passed after latest dashboard status update</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 19:45:51 BST</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness still reports 0 blockers and 12 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">public beta still reports 14 blockers and 1 warning in blank env</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 19:47:02 BST</td></tr>
+          <tr><td><code>Automation stop gate</code></td><td class="warn">armed: pause when public-beta readiness blocker count reaches 0; current blank-env blocker count remains 14</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_http_internal_errors_return_generic_detail_and_redacted_log tests/test_security_and_integrations.py::test_safe_error_logging_redacts_pii_and_secrets -q</code></td><td class="ok">2 passed</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas tests</code></td><td class="ok">passed after adding <code>astrology_saas.observability</code></td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">26 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">58 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 12 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning; safe logging detail now distinguishes local redaction from production sink config</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="warn">first direct run failed with connection refused because no API server was running</td></tr>
+          <tr><td><code>ASTROLOGY_DEV_MODE=1 python3 -m astrology_saas.api_server --port 8787</code></td><td class="ok">local server started for smoke validation and was stopped afterwards</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="ok">completed full local HTTP flow through saved profile, mock checkout, paid report, share settings, agent answer, export, account deletion, and post-delete token revocation status 401</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 20:22:44 BST</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py::test_deployment_readiness_remediation_and_env_template_are_secret_free tests/test_security_and_integrations.py::test_http_paid_flow_and_stripe_webhook_adapter -q</code></td><td class="ok">2 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m compileall astrology_saas scripts tests</code></td><td class="ok">passed after readiness remediation/template changes</td></tr>
+          <tr><td><code>python3 -m pytest tests/test_security_and_integrations.py -q</code></td><td class="ok">27 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 -m pytest -q</code></td><td class="ok">59 passed, 1 upstream kerykeion deprecation warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env local --json</code></td><td class="ok">local readiness passed with 0 blockers and 12 warnings</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --json</code></td><td class="warn">returned exit code 1 as expected, with 14 blockers and 1 warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --target-env public_beta --remediation --json</code></td><td class="warn">returned exit code 1 as expected, with secret-free remediation items for 14 blockers and 1 warning</td></tr>
+          <tr><td><code>python3 scripts/check_deployment_readiness.py --env-template</code></td><td class="ok">printed placeholder-only public-beta env template matching <code>.env.public_beta.example</code></td></tr>
+          <tr><td><code>ASTROLOGY_DEV_MODE=1 python3 -m astrology_saas.api_server --port 8787</code></td><td class="ok">local server started for smoke validation and was stopped afterwards</td></tr>
+          <tr><td><code>python3 scripts/smoke_api.py</code></td><td class="ok">completed full local HTTP flow through account deletion and post-delete token revocation status 401</td></tr>
+          <tr><td><code>date '+%Y-%m-%d %H:%M:%S %Z'</code></td><td class="ok">2026-05-20 21:22:10 BST</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoundScribe 專案儀表板</title>
+  <style>
+    :root {
+      --bg: #111319;
+      --panel: #1a1d25;
+      --panel-2: #212631;
+      --ink: #f2f0e8;
+      --muted: #a9afba;
+      --line: #343a46;
+      --green: #32c48d;
+      --amber: #e0a33a;
+      --red: #ef6767;
+      --blue: #5ba7d7;
+      --teal: #58c7c0;
+      --violet: #a889e6;
+      --paper: #ebe6d8;
+      --code: #0b0d12;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .28);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(91, 167, 215, .16), transparent 36rem),
+        radial-gradient(circle at top right, rgba(88, 199, 192, .12), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    a { color: var(--blue); }
+
+    .shell {
+      width: min(1440px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .hero, .card, .metric, .console, details {
+      background: color-mix(in srgb, var(--panel) 92%, black);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      min-height: 360px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .hero:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(235, 230, 216, .035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(235, 230, 216, .035) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+      pointer-events: none;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: clamp(42px, 6vw, 82px);
+      line-height: .92;
+      max-width: 960px;
+      letter-spacing: 0;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      max-width: 880px;
+      color: var(--paper);
+      font-size: 18px;
+    }
+
+    .source-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pill.good { color: #bff1dc; border-color: rgba(50, 196, 141, .48); }
+    .pill.warn { color: #f5d18c; border-color: rgba(224, 163, 58, .48); }
+    .pill.info { color: #c4e8fa; border-color: rgba(91, 167, 215, .48); }
+    .pill.risk { color: #fac3c3; border-color: rgba(239, 103, 103, .48); }
+
+    .status-strip {
+      display: grid;
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 8px;
+      min-height: 110px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 800;
+    }
+
+    .metric .value {
+      font-size: 30px;
+      font-weight: 850;
+      margin: 8px 0 4px;
+    }
+
+    .metric .caption { color: var(--muted); font-size: 13px; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 18px;
+      background: linear-gradient(to bottom, var(--bg), rgba(17, 19, 25, .82), transparent);
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
+      border-radius: 999px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    section { margin-top: 20px; }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .card p, .card li { color: var(--muted); }
+    .card strong { color: var(--ink); }
+
+    .next-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .next-list li {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      justify-content: center;
+      border-radius: 6px;
+      padding: 4px 7px;
+      font-size: 11px;
+      font-weight: 850;
+      color: var(--bg);
+      background: var(--paper);
+    }
+
+    .tag.p0 { background: var(--red); color: white; }
+    .tag.p1 { background: var(--amber); }
+    .tag.p2 { background: var(--blue); color: white; }
+    .tag.p3 { background: var(--green); color: #062014; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .step {
+      min-height: 130px;
+      padding: 14px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .step:after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-top: 2px solid var(--blue);
+      border-right: 2px solid var(--blue);
+      transform: translateY(-50%) rotate(45deg);
+      background: var(--bg);
+    }
+
+    .step:last-child:after { display: none; }
+
+    .step .num {
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .arch {
+      width: 100%;
+      min-height: 420px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .arch svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 420px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--paper);
+      background: #252b37;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    td { color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tab-button {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .tab-button[aria-selected="true"] {
+      color: var(--bg);
+      background: var(--paper);
+      border-color: var(--paper);
+    }
+
+    .tab-panel[hidden] { display: none; }
+
+    details {
+      border-radius: 8px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 14px 16px;
+      background: var(--panel-2);
+      font-weight: 850;
+    }
+
+    details .inside { padding: 0 16px 16px; color: var(--muted); }
+
+    .console {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--code);
+    }
+
+    .console-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #252b37;
+      background: #151922;
+    }
+
+    .console pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      color: #d7e0ed;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    button.copy {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 7px 10px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .sources {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      header, .grid.two, .grid.three, .grid.four { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .step:after { display: none; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 20px, 1440px); }
+      .hero { padding: 20px; min-height: auto; }
+      .flow { grid-template-columns: 1fr; }
+      .next-list li { grid-template-columns: 1fr; }
+      th, td { font-size: 13px; padding: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="hero">
+        <div class="eyebrow">專案儀表板 / 更新日期 2026-06-06</div>
+        <h1>SoundScribe 2.0.0 build 20 已 archive 並上傳 App Store Connect；App Preview 已全套重出 day mode。</h1>
+        <p class="summary">
+          本次狀態刷新以本機 build settings、archive/upload logs、screenshot folders 為準：<code>SoundScribe</code> 目前 project build 是 <code>2.0.0 (20)</code>，arm64 archive 已成功建立，並已透過 App Store Connect export flow 上傳；log 顯示 <code>Uploaded package is processing</code>、<code>Upload succeeded</code>、<code>EXPORT SUCCEEDED</code>。UI screenshot 方面，<code>reports/appstore_previews</code>、<code>reports/app_preview_screenshots_20260605</code> 與 <code>reports/app_preview_screenshots_20260606</code> 已全部重出成 day mode，並使用 fake data；AI Settings 圖亦已遮走 API key/prompt 個人設定痕跡。
+        </p>
+        <div class="source-note">
+          <span class="pill good">App target：2.0.0 build 20</span>
+          <span class="pill good">Archive：succeeded</span>
+          <span class="pill good">Upload：succeeded</span>
+          <span class="pill good">App Preview：day mode refreshed</span>
+          <span class="pill info">Featured：8 PNG</span>
+          <span class="pill info">Raw/final/captures：40+ PNG</span>
+        </div>
+      </div>
+      <aside class="status-strip">
+        <div class="metric">
+          <div class="label">目前狀態</div>
+          <div class="value">已上傳</div>
+          <div class="caption">2.0.0 build 20 archive/upload 成功；App Store Connect package 已進入 processing。</div>
+        </div>
+        <div class="metric">
+          <div class="label">主要風險</div>
+          <div class="value">需上架替換</div>
+          <div class="caption">本機 preview 圖已重出；若要 App Store Connect 顯示新圖，仍需在 ASC metadata/screenshots 頁面替換。</div>
+        </div>
+        <div class="metric">
+          <div class="label">閱讀對象</div>
+          <div class="value">發佈交接</div>
+          <div class="caption">本機 asset 已準備好；下一步可上傳替換 App Store Connect screenshots。</div>
+        </div>
+      </aside>
+    </header>
+
+    <nav aria-label="儀表板區段">
+      <a href="#next">下一步</a>
+      <a href="#workflow">工作流程</a>
+      <a href="#architecture">架構</a>
+      <a href="#metrics">指標</a>
+      <a href="#risks">風險</a>
+      <a href="#modules">模組</a>
+      <a href="#commands">指令</a>
+      <a href="#sources">來源</a>
+    </nav>
+
+    <section id="next" class="grid two">
+      <div class="card">
+        <h2>下一步</h2>
+        <ul class="next-list">
+          <li><span class="tag p0">P0</span><span><strong>上傳替換 App Store Connect screenshots。</strong>本機 day mode / fake-data preview 圖已完成；下一步是在 ASC metadata 頁面替換現有圖。</span></li>
+          <li><span class="tag p1">P1</span><span><strong>App Store Connect processing 檢查。</strong>2.0.0 build 20 已上傳，需等 Apple server 完成 processing 後再進 TestFlight/build list 檢查。</span></li>
+          <li><span class="tag p1">P1</span><span><strong>更新 App Store Connect screenshots。</strong>確認新圖尺寸與語言組合後，再替換目前 metadata 內的 preview assets。</span></li>
+          <li><span class="tag p2">P2</span><span><strong>保留 raw capture set。</strong><code>reports/app_preview_screenshots_20260606</code> 可作往後 UI regression 對照。</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>目前狀態快照</h2>
+        <table>
+          <tr><th>範圍</th><th>已驗證狀態</th></tr>
+          <tr><td>版本/build</td><td><code>xcodebuild -showBuildSettings</code>：MARKETING_VERSION <code>2.0.0</code>，CURRENT_PROJECT_VERSION <code>20</code>，PRODUCT_NAME <code>SoundScribe</code>。</td></tr>
+          <tr><td>Archive</td><td><code>archives/SoundScribe-2.0.0-build20-arm64.xcarchive</code> 已成功建立；log 顯示 <code>ARCHIVE SUCCEEDED</code>。</td></tr>
+          <tr><td>Distribution</td><td><code>logs/export-upload-2.0.0-build20.log</code> 顯示 <code>Uploaded package is processing</code>、<code>Upload succeeded</code>、<code>EXPORT SUCCEEDED</code>。</td></tr>
+          <tr><td>UI recheck</td><td>已用 app light appearance 生成 day mode 假資料截圖；主 recheck 圖：<code>reports/uiux_screenshots/light_recheck/10_transcribe_compact_light_fake_data.png</code>。</td></tr>
+          <tr><td>App Preview assets</td><td><code>featured_v2</code> 8 張 <code>2880x1800</code>、<code>final</code> 4 張 <code>2560x1600</code>、<code>raw</code> 13 張 <code>2560x1600</code>、<code>app_preview_screenshots_20260605</code> 7 張 <code>2560x1600</code>、<code>app_preview_screenshots_20260606</code> 14 張 <code>2560x1600</code>；尺寸驗證 0 errors。</td></tr>
+          <tr><td>Build/test</td><td>UI 修正後曾跑 debug build 並通過；archive/upload 亦通過。本輪 status update 未重新跑 full scheme tests。</td></tr>
+          <tr><td>資料保護</td><td>Light mode preview 擷取期間曾臨時替換 queue/history 為假資料；完成後已還原原本 queue/history，刪除臨時假檔案，並 sanitise AI Settings 的 API key/prompt 顯示。</td></tr>
+          <tr><td>Repo hygiene</td><td>工作樹仍含本輪 UI polish、screenshot、archive/export log 與既有變更；未進行 commit/stage。</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="workflow" class="card">
+      <h2>目前使用者工作流程</h2>
+      <div class="flow" aria-label="轉錄工作流程">
+        <div class="step"><div class="num">01</div><h3>輸入</h3><p>檔案、URL、live dictation、watch folder rule，或 Shortcut/App Intent。</p></div>
+        <div class="step"><div class="num">02</div><h3>準備音訊</h3><p>驗證 media、將 URL download streaming 到檔案，並以 AVFoundation-native path 轉換。</p></div>
+        <div class="step"><div class="num">03</div><h3>分段</h3><p>VAD、30-90 秒 chunk size、overlap，以及基於 sample range 的長音訊 loop。</p></div>
+        <div class="step"><div class="num">04</div><h3>推理</h3><p>在 Apple Silicon 上透過 qwen3-asr-swift 與 MLX/Metal 執行 Qwen3-ASR。</p></div>
+        <div class="step"><div class="num">05</div><h3>後處理</h3><p>Confidence filter、BPE mojibake repair、repetition collapse、標點與 deduplication。</p></div>
+        <div class="step"><div class="num">06</div><h3>保存</h3><p>Canonical txt transcript、可選 subtitle 與 speaker sidecars、history library entry、exports。</p></div>
+      </div>
+    </section>
+
+    <section id="architecture" class="card">
+      <h2>架構圖</h2>
+      <div class="arch" role="img" aria-label="從使用者輸入到服務與輸出的架構圖">
+        <svg viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill="#5ba7d7"/>
+            </marker>
+            <style>
+              .box { fill:#1a1d25; stroke:#343a46; stroke-width:2; rx:8; }
+              .core { fill:#223040; stroke:#5ba7d7; }
+              .out { fill:#1f312c; stroke:#32c48d; }
+              .risk { fill:#342828; stroke:#ef6767; }
+              .txt { fill:#f2f0e8; font: 700 16px ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+              .sub { fill:#a9afba; font: 13px ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+              .line { stroke:#5ba7d7; stroke-width:2; fill:none; marker-end:url(#arrow); }
+            </style>
+          </defs>
+          <rect class="box" x="30" y="48" width="180" height="86"/>
+          <text class="txt" x="52" y="82">輸入</text>
+          <text class="sub" x="52" y="106">File, URL, mic</text>
+          <text class="sub" x="52" y="124">Watch folders, Shortcuts</text>
+
+          <rect class="box" x="270" y="48" width="190" height="86"/>
+          <text class="txt" x="292" y="82">管理層</text>
+          <text class="sub" x="292" y="106">TranscriptionManager</text>
+          <text class="sub" x="292" y="124">Batch queue state</text>
+
+          <rect class="core" x="520" y="34" width="210" height="112"/>
+          <text class="txt" x="545" y="72">原生 ASR 核心</text>
+          <text class="sub" x="545" y="98">NativeTranscriptionService</text>
+          <text class="sub" x="545" y="118">LongAudioTranscriber</text>
+          <text class="sub" x="545" y="136">MLX + Qwen3ASR</text>
+
+          <rect class="box" x="790" y="48" width="178" height="86"/>
+          <text class="txt" x="812" y="82">清理</text>
+          <text class="sub" x="812" y="106">TextCleaning</text>
+          <text class="sub" x="812" y="124">Confidence filters</text>
+
+          <rect class="out" x="1018" y="36" width="150" height="110"/>
+          <text class="txt" x="1040" y="72">輸出</text>
+          <text class="sub" x="1040" y="98">*_transcript.txt</text>
+          <text class="sub" x="1040" y="118">SRT/VTT/JSON</text>
+          <text class="sub" x="1040" y="138">speakers.json</text>
+
+          <rect class="box" x="270" y="238" width="190" height="92"/>
+          <text class="txt" x="292" y="272">設定</text>
+          <text class="sub" x="292" y="296">AppSettings</text>
+          <text class="sub" x="292" y="314">Keychain helpers</text>
+
+          <rect class="box" x="520" y="238" width="210" height="92"/>
+          <text class="txt" x="545" y="272">可選服務</text>
+          <text class="sub" x="545" y="296">DiarizationService</text>
+          <text class="sub" x="545" y="314">GoogleAIService/providers</text>
+
+          <rect class="out" x="790" y="238" width="178" height="92"/>
+          <text class="txt" x="812" y="272">資料庫</text>
+          <text class="sub" x="812" y="296">TranscriptLibraryStore</text>
+          <text class="sub" x="812" y="314">History UI + export</text>
+
+          <rect class="risk" x="30" y="238" width="180" height="92"/>
+          <text class="txt" x="52" y="272">審核面</text>
+          <text class="sub" x="52" y="296">Sandbox, privacy</text>
+          <text class="sub" x="52" y="314">ASC/TestFlight</text>
+
+          <path class="line" d="M210 91 H270"/>
+          <path class="line" d="M460 91 H520"/>
+          <path class="line" d="M730 91 H790"/>
+          <path class="line" d="M968 91 H1018"/>
+          <path class="line" d="M365 238 V142"/>
+          <path class="line" d="M625 146 V238"/>
+          <path class="line" d="M730 284 H790"/>
+          <path class="line" d="M120 238 V146"/>
+        </svg>
+      </div>
+    </section>
+
+    <section id="metrics" class="card">
+      <h2>指標與驗證</h2>
+      <div class="tabs" role="tablist" aria-label="指標分類">
+        <button class="tab-button" role="tab" aria-selected="true" aria-controls="product-panel" id="product-tab">產品驗證</button>
+        <button class="tab-button" role="tab" aria-selected="false" aria-controls="internal-panel" id="internal-tab">內部 benchmark</button>
+        <button class="tab-button" role="tab" aria-selected="false" aria-controls="stale-panel" id="stale-tab">歷史/過期</button>
+      </div>
+      <div id="product-panel" class="tab-panel" role="tabpanel" aria-labelledby="product-tab">
+        <table>
+          <tr><th>訊號</th><th>數值</th><th>新鮮度</th></tr>
+          <tr><td>Debug build</td><td>SUCCEEDED：<code>xcodebuild -project Soundscribe/Soundscribe.xcodeproj -scheme Soundscribe build</code>。</td><td>2026-05-30 本機執行。</td></tr>
+          <tr><td>Focused unit tests</td><td>SUCCEEDED：27 tests passed，0 failures。</td><td>2026-05-30 本機執行。</td></tr>
+          <tr><td>Version metadata</td><td><code>MARKETING_VERSION = 1.8.0</code>；<code>CURRENT_PROJECT_VERSION = 16</code>。</td><td>2026-05-30 本機檢查。</td></tr>
+          <tr><td>Release archive</td><td>PENDING：1.8.0 build 16 尚未 archive。</td><td>下一步。</td></tr>
+          <tr><td>App Store Connect upload</td><td>PENDING：等待 archive 後上傳。</td><td>下一步。</td></tr>
+          <tr><td>Source inventory</td><td>App source/test files 已按本輪變更局部驗證；repo 仍含既有 dirty/untracked entries。</td><td>2026-05-30 本機觀察。</td></tr>
+        </table>
+      </div>
+      <div id="internal-panel" class="tab-panel" role="tabpanel" aria-labelledby="internal-tab" hidden>
+        <table>
+          <tr><th>指標</th><th>數值</th><th>標籤</th></tr>
+          <tr><td>語言/方言</td><td>共 52 種，包含 25 種中文方言。</td><td>README/AGENTS 記錄的產品能力。</td></tr>
+          <tr><td>Chunk size 範圍</td><td>30-90 秒；overlap 可 auto 10% 或 manual 0-20 秒。</td><td>設定能力。</td></tr>
+          <tr><td>CPU/GPU pipeline 提升</td><td>README 表示，在 sequential GPU inference 前先 parallel mel extraction，可提升 10-20% throughput。</td><td>內部 benchmark claim；未找到最新 raw benchmark report。</td></tr>
+          <tr><td>AI 長文本門檻</td><td>超過 8,000 字元的 transcripts 會切 chunk 後做 AI post-processing。</td><td>README 記錄的實作行為。</td></tr>
+          <tr><td>Conservative confidence cutoff</td><td>Conservative mode 下，avgLogProb 低於 -0.60 的 chunk 會被丟棄。</td><td>內部 ASR quality heuristic。</td></tr>
+        </table>
+      </div>
+      <div id="stale-panel" class="tab-panel" role="tabpanel" aria-labelledby="stale-tab" hidden>
+        <table>
+          <tr><th>報告</th><th>發現</th><th>應如何看待</th></tr>
+          <tr><td>AUDIT_REPORT.txt, 2026-02-13</td><td>Feature score 61%，有多項 failed items。</td><td>僅作歷史參考；後續文件顯示許多項目已實作。</td></tr>
+          <tr><td>MAS_AUDIT_REPORT.md, 2026-02-24</td><td>Critical App Store blockers：sandbox、Process、ffmpeg、entitlements。</td><td>歷史風險來源；AGENTS.md 表示 App Store-safe 1.5 workflow 已取代它。</td></tr>
+          <tr><td>Qwen3-ASR-Mac/APP_STORE_BLOCKERS.md, 2026-03-02</td><td>列出 sandbox 與 Python 時代 blockers。</td><td>Historical；適合用於 regression checks。</td></tr>
+          <tr><td>build_archive_arm64.log, 2026-03-25</td><td>ARCHIVE SUCCEEDED。</td><td>早於 1.5；不可當作最新證明。</td></tr>
+          <tr><td>build_archive_error.log</td><td>包含較舊的 11-failure archive trace，涉及 x86_64 package builds。</td><td>歷史失敗記錄；不要與目前 AGENTS status 混淆。</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="risks" class="grid two">
+      <div class="card">
+        <h2>風險 / 觀察項目</h2>
+        <table>
+          <tr><th>風險</th><th>為何重要</th><th>行動</th></tr>
+          <tr><td>1.8.0 尚未 archive/upload</td><td>本地 build/test 通過不等於 App Store 可用；仍需 Release archive、upload 和 ASC processing。</td><td>執行 archive 流程並檢查 build 16 processing/result。</td></tr>
+          <tr><td>Xcode metadata note</td><td>UI tests 通過，但 log 出現 <code>DebuggerLLDB.DebuggerVersionStore.StoreError</code> / no debugger version note。</td><td>暫不阻塞；若 Xcode UI debug/launch 行為異常再處理。</td></tr>
+          <tr><td>Concurrency warnings</td><td>多個 Swift concurrency warnings 在未來 Swift 6 language mode 下可能升級為 errors。</td><td>把 NativeTranscriptionService、AudioConverter、AudioFeatureExtractor 的 actor/sendable warnings 排進修復清單。</td></tr>
+          <tr><td>Dirty worktree</td><td>大量 modified/untracked files 會增加誤改、漏提交、archive 污染風險。</td><td>建立功能分支或按功能分批 stage；不要做大範圍 cleanup 直到變更歸屬清楚。</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h2>核心設計原則</h2>
+        <table>
+          <tr><th>原則</th><th>目前落地方式</th></tr>
+          <tr><td>App Store-safe automation</td><td>根據 AGENTS.md，只做 Shortcuts 與 watch folders；不加入 CLI helper、system audio、screen recording 或 network server。</td></tr>
+          <tr><td>Canonical output</td><td>主 transcript 永遠是 <code>*_transcript.txt</code>；subtitle 與 speaker files 是 sidecars。</td></tr>
+          <tr><td>On-device first</td><td>ASR inference 透過 MLX 在 Apple Silicon 本地執行；AI post-processing 是可選且明確 provider-specific。</td></tr>
+          <tr><td>可恢復 workflow</td><td>Queue persistence v2、history library、unique output paths，以及 file-backed records。</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="modules" class="card">
+      <h2>模組細節</h2>
+      <div class="grid two">
+        <details open>
+          <summary>轉錄與音訊路徑</summary>
+          <div class="inside">
+            <p><strong>NativeTranscriptionService.swift</strong> 負責載入模型並協調 chunked native ASR。<strong>LongAudioTranscriber.swift</strong> 處理 mel extraction 與 GPU inference。<strong>AudioConverter.swift</strong> 與 <strong>AudioStreamManager.swift</strong> 覆蓋 file conversion 與 live dictation audio。</p>
+          </div>
+        </details>
+        <details>
+          <summary>Queue、持久化與輸出</summary>
+          <div class="inside">
+            <p><strong>TranscriptionManager.swift</strong> 掌管 batch state、crash recovery 與 background diarization。<strong>OutputPathResolver.swift</strong> 避免檔名碰撞。<strong>BatchTypes.swift</strong> 承載 subtitle、speaker metadata 與 source-kind state。</p>
+          </div>
+        </details>
+        <details>
+          <summary>History、watch folders 與 Shortcuts</summary>
+          <div class="inside">
+            <p><strong>TranscriptLibraryStore.swift</strong> 寫入 history JSON library。<strong>WatchFolderService.swift</strong> 提供 non-recursive folder monitoring 與 polling fallback。<strong>AppShortcuts.swift</strong> 暴露 Transcribe File、Transcribe URL 與 recent transcript intents。</p>
+          </div>
+        </details>
+        <details>
+          <summary>AI、export 與 speaker tools</summary>
+          <div class="inside">
+            <p><strong>GoogleAIService.swift</strong>、<strong>AIModelFetcher.swift</strong> 與 <strong>AITypes.swift</strong> 負責 route selected AI providers。<strong>ExportService.swift</strong> 與 <strong>ExportPresetStore.swift</strong> 處理 TXT/PDF/Markdown/SRT/VTT/JSON exports。<strong>SpeakerEditorSheet.swift</strong> 與 <strong>SpeakerMetadata.swift</strong> 處理 rename/merge metadata。</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="commands" class="grid two">
+      <div class="console">
+        <div class="console-head">
+          <strong>指令控制台</strong>
+          <button class="copy" data-copy="commands-block">複製</button>
+        </div>
+        <pre id="commands-block"># Latest local status refresh, 2026-05-30
+rg -n "MARKETING_VERSION|CURRENT_PROJECT_VERSION" Soundscribe/Soundscribe.xcodeproj/project.pbxproj
+# Result highlights:
+# MARKETING_VERSION = 1.8.0
+# CURRENT_PROJECT_VERSION = 16
+
+xcodebuild -version
+# Xcode 26.5
+# Build version 17F42
+
+xcodebuild -project Soundscribe/Soundscribe.xcodeproj -scheme Soundscribe -only-testing:SoundscribeTests test
+# TEST SUCCEEDED
+# 27 tests passed
+
+xcodebuild -project Soundscribe/Soundscribe.xcodeproj -scheme Soundscribe build
+# BUILD SUCCEEDED
+
+xcodebuild -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj -scheme Qwen3-ASR-Mac build
+# Result: BUILD SUCCEEDED
+
+xcodebuild -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj -scheme Qwen3-ASR-Mac -only-testing:Qwen3-ASR-MacTests test
+# Result: TEST SUCCEEDED, 11 tests passed
+
+xcodebuild -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj -scheme Qwen3-ASR-Mac test
+# Result: TEST SUCCEEDED, 17 total tests passed
+
+# Build macOS app after fixing blocker
+xcodebuild \
+  -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj \
+  -scheme "Qwen3-ASR-Mac" \
+  -destination 'platform=macOS' \
+  build
+
+# AGENTS.md 記錄的 focused unit tests
+xcodebuild \
+  -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj \
+  -scheme "Qwen3-ASR-Mac" \
+  -destination 'platform=macOS' \
+  -only-testing:Qwen3-ASR-MacTests \
+  test
+
+# Full scheme test pass
+xcodebuild test \
+  -project Qwen3-ASR-Mac/Qwen3-ASR-Mac.xcodeproj \
+  -scheme "Qwen3-ASR-Mac" \
+  -destination 'platform=macOS'
+
+# 清理本專案 DerivedData
+rm -rf ~/Library/Developer/Xcode/DerivedData/Qwen3-ASR-Mac-*</pre>
+      </div>
+      <div class="card">
+        <h2>實用本地檢查</h2>
+        <table>
+          <tr><th>需求</th><th>指令</th></tr>
+          <tr><td>尋找 source files</td><td><code>rg --files Qwen3-ASR-Mac/Qwen3-ASR-Mac</code></td></tr>
+          <tr><td>檢查版本/build</td><td><code>rg -n "MARKETING_VERSION|CURRENT_PROJECT_VERSION" Soundscribe/Soundscribe.xcodeproj/project.pbxproj</code></td></tr>
+          <tr><td>檢視 repo changes</td><td><code>git status --short</code></td></tr>
+          <tr><td>開啟 dashboard</td><td><code>open reports/project_dashboard.html</code></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="sources" class="card sources">
+      <h2>已讀來源</h2>
+      <p>本頁根據 repo-local sources 與 2026-05-30 本機 command results 更新：AGENTS.md、project.pbxproj、APP_STORE_LISTING.md、APP_STORE_METADATA_HISTORY.md、git status、xcodebuild build、focused unit tests，以及本輪 SoundScribe app/test source changes。本文未 live 查詢 App Store Connect。</p>
+    </section>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('[role="tab"]');
+    const panels = document.querySelectorAll('[role="tabpanel"]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.setAttribute('aria-selected', 'false'));
+        panels.forEach((panel) => panel.hidden = true);
+        tab.setAttribute('aria-selected', 'true');
+        document.getElementById(tab.getAttribute('aria-controls')).hidden = false;
+      });
+    });
+
+    document.querySelectorAll('[data-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copy);
+        const original = button.textContent;
+        try {
+          await navigator.clipboard.writeText(target.textContent);
+          button.textContent = '已複製';
+        } catch (_) {
+          button.textContent = '請手動選取';
+        }
+        window.setTimeout(() => button.textContent = original, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

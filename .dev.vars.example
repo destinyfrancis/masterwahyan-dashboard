@@ -1,0 +1,2 @@
+DASHBOARD_PASSWORD_HASH=replace-with-sha256-password-hash
+DASHBOARD_SESSION_SECRET=replace-with-long-random-session-secret
