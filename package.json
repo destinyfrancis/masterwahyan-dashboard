@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync": "node scripts/sync-dashboards.js",
+    "sync:publish": "node scripts/publish-dashboard-updates.js",
     "dev": "wrangler pages dev public --compatibility-date=2026-06-06",
     "deploy": "wrangler pages deploy public --project-name=masterwahyan-dashboard"
   },
